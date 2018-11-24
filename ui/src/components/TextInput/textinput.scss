@@ -3,8 +3,12 @@
   justify-content: center;
   align-self: center;
   width: 500px;
-  height: 30px;
+  height: 35px;
   position: relative;
+
+  @include mobile {
+    width: 300px;
+  }
 
   .text-input {
     width: 100%;
@@ -19,7 +23,7 @@
   .clear-field-button-container {
     position: absolute;
     right: 12px;
-    top: 6px;
+    top: 10px;
     background-color: $border-gray;
     height: 15px;
     border-radius: 15px;

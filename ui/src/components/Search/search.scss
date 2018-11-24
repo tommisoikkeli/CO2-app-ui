@@ -1,0 +1,12 @@
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .search-button {
+    margin-left: 15px;
+    @include mobile {
+      margin-left: 5px;
+    }
+  }
+}
