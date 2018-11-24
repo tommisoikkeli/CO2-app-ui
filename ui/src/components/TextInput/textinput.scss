@@ -1,0 +1,35 @@
+.input-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+
+  .text-input {
+    width: 500px;
+    outline: none;
+    padding: 10px;
+    background: $white;
+    font-size: 12px;
+    border-radius: $border-radius;
+    border: 1px solid $border-gray;
+  }
+
+  .clear-field-button-container {
+    position: relative;
+    right: 25px;
+    top: 6px;
+    background-color: $border-gray;
+    height: 17px;
+    border-radius: 50%;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .clear-field-button {
+      color: $white;
+      font-size: 12px;
+    }
+  }
+}
