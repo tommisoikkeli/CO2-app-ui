@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Header} from './components/Header/Header';
-import {Search} from './components/Search/Search';
+import Search from './components/Search/Search';
 
 export default class App extends React.Component<any> {
   public render() {

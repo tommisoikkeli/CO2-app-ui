@@ -15,7 +15,7 @@ export enum ButtonType {
 export const Button: React.SFC<IButtonProps> = ({onClick, text, className, type, disabled}) => {
   const additionalClass = className ? className : '';
   return (
-    <button className={`button-container ${type} ${additionalClass}`}>
+    <button className={`button-container ${type} ${additionalClass}`} disabled={disabled}>
       <div className='button-content' onClick={onClick}>
         <span>{text}</span>
       </div>
