@@ -14,9 +14,18 @@
       background: lighten($steelblue, 5%);
     }
   }
+
+  &:disabled {
+    background: $border-gray;
+    cursor: not-allowed;
+    &:hover {
+      background: $border-gray;
+    }
+  }
   
   .button-content {
     color: white;
+    font-weight: bold;
     flex: 1 1 auto;
   }
 }

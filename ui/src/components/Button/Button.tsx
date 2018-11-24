@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 interface IButtonProps {
-  onClick?: () => void;
+  onClick: () => void;
   text: string;
-  className?: string;
   type: ButtonType;
+  className?: string;
   disabled?: boolean;
 }
 
@@ -12,11 +12,20 @@ export enum ButtonType {
   DEFAULT = 'default'
 }
 
-export const Button: React.SFC<IButtonProps> = ({onClick, text, className, type, disabled}) => {
+export const Button: React.SFC<IButtonProps> = ({
+  onClick,
+  text,
+  type,
+  className,
+  disabled
+}) => {
   const additionalClass = className ? className : '';
   return (
-    <button className={`button-container ${type} ${additionalClass}`} disabled={disabled}>
-      <div className='button-content' onClick={onClick}>
+    <button
+      className={`button-container ${type} ${additionalClass}`}
+      onClick={onClick}
+      disabled={disabled}>
+      <div className='button-content'>
         <span>{text}</span>
       </div>
     </button>

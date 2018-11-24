@@ -18,7 +18,7 @@ export default class Search extends React.Component<any, ISearchState> {
     this.setState({value: event.target.value});
   };
 
-  private onClearButtonClick = () => {
+  private onClearButtonClick = (): void => {
     this.setState({value: ''});
   };
 
