@@ -1,15 +1,13 @@
 import * as React from 'react';
 import TextInput from './components/TextInput/TextInput';
+import {Header} from './components/Header/Header';
 
-interface IAppProps {
-  name?: string;
-}
-
-export default class App extends React.Component<IAppProps> {
+export default class App extends React.Component<any> {
   public render() {
     return (
-      <div className="app-container">
-        <TextInput placeholder="Search for a country"/>
+      <div className='app-container'>
+        <Header title='CO2 Emissions' />
+        <TextInput placeholder='Search for a country' />
       </div>
     );
   }

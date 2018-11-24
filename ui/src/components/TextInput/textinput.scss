@@ -1,11 +1,13 @@
 .input-container {
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-self: center;
+  width: 500px;
   height: 30px;
+  position: relative;
 
   .text-input {
-    width: 500px;
+    width: 100%;
     outline: none;
     padding: 10px;
     background: $white;
@@ -15,13 +17,13 @@
   }
 
   .clear-field-button-container {
-    position: relative;
-    right: 25px;
+    position: absolute;
+    right: 12px;
     top: 6px;
     background-color: $border-gray;
-    height: 17px;
-    border-radius: 50%;
-    width: 16px;
+    height: 15px;
+    border-radius: 15px;
+    width: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
