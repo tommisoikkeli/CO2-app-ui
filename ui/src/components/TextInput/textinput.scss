@@ -7,7 +7,11 @@
   position: relative;
 
   @include mobile {
-    width: 300px;
+    width: 330px;
+  }
+
+  @include mobile-small {
+    width: 225px;
   }
 
   .text-input {
