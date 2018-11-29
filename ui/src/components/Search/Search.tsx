@@ -2,13 +2,24 @@ import * as React from 'react';
 import {TextInput} from '../TextInput/TextInput';
 import {Button, ButtonType} from '../Button/Button';
 import {Checkbox} from '../Checkbox/Checkbox';
+import {filterCountries} from '../../redux/modules/Search/searchActions';
+import {connect} from 'react-redux';
+import {debounce} from 'lodash';
+
+interface ISearchProps {
+  suggestCountries: (searchTerm: string) => void;
+}
 
 interface ISearchState {
   value: string;
   checkboxChecked: boolean;
 }
 
-export default class Search extends React.Component<any, ISearchState> {
+const mapDispatchToProps = (dispatch) => ({
+  suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm))
+});
+
+class Search extends React.Component<ISearchProps, ISearchState> {
   public constructor(props) {
     super(props);
     this.state = {
@@ -19,15 +30,24 @@ export default class Search extends React.Component<any, ISearchState> {
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({value: event.target.value});
+    this.getSuggestions();
   };
 
   private onClearButtonClick = (): void => {
     this.setState({value: ''});
+    this.getSuggestions();
   };
 
   private onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({checkboxChecked: !this.state.checkboxChecked});
   };
+
+  private getSuggestions = debounce(() => {
+    const {value} = this.state;
+    this.isSearchLengthOverOne() && this.props.suggestCountries(value);
+  }, 300);
+
+  private isSearchLengthOverOne = () => this.state.value.length > 1;
 
   public render() {
     return (
@@ -44,7 +64,7 @@ export default class Search extends React.Component<any, ISearchState> {
             type={ButtonType.DEFAULT}
             onClick={() => console.log('yaah')}
             className='search-button'
-            disabled={this.state.value.length <= 0}
+            disabled={!this.isSearchLengthOverOne()}
           />
         </div>
         <div className='search-checkbox-wrapper'>
@@ -59,3 +79,5 @@ export default class Search extends React.Component<any, ISearchState> {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(Search)
