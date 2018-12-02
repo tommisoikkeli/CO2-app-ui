@@ -58,15 +58,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     if (this.isSearchLengthOverOne()) {
       this.setState({suggestionsVisible: true});
     } else {
-      this.setState({
-        suggestionsVisible: false
-      });
+      this.setState({suggestionsVisible: false});
     }
-    const {value} = this.state;
-    this.isSearchLengthOverOne() && this.props.suggestCountries(value);
+    this.isSearchLengthOverOne() && this.props.suggestCountries(this.state.value);
   }, 300);
 
-  private isSearchLengthOverOne = () => this.state.value.length > 1;
+  private isSearchLengthOverOne = (): boolean => this.state.value.length > 1;
 
   private onSuggestionItemsClick = (item: string): void => {
     this.setState({

@@ -3,10 +3,10 @@ import {shallow, mount} from 'enzyme';
 import {TextInput} from './TextInput';
 
 const props = {
-  onChange: () => false,
+  onChange: jest.fn(),
   placeholder: 'Placeholder text',
   value: '',
-  onClearButtonClick: () => false
+  onClearButtonClick: jest.fn()
 };
 
 describe('TextInput', () => {
@@ -20,5 +20,12 @@ describe('TextInput', () => {
   it('renders ClearFieldButton when value is not empty', () => {
     const wrapper = shallow(<TextInput {...props} value='Test'/>);
     expect(wrapper.html()).toContain('clear-field-button-container');
+  });
+
+  it('calls onChange when value is changed', () => {
+    const wrapper = mount(<TextInput {...props} />);
+    const input = wrapper.find('input');
+    input.simulate('change', {target: {value: 'foobar'}});
+    expect(wrapper.props().onChange).toHaveBeenCalledTimes(1);
   });
 });

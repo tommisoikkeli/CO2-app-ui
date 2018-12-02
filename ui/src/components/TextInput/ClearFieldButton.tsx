@@ -5,9 +5,7 @@ interface IClearFieldButtonProps {
 }
 
 export const ClearFieldButton: React.SFC<IClearFieldButtonProps> = ({onClick}) => (
-  <div
-    className='clear-field-button-container'
-    onClick={onClick}>
+  <div className='clear-field-button-container' onClick={onClick}>
     <i className='material-icons clear-field-button'>clear</i>
   </div>
 );

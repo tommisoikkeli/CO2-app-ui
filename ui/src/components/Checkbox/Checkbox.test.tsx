@@ -5,7 +5,7 @@ import {shallow, mount} from 'enzyme';
 const props = {
   label: 'Label text',
   checked: false,
-  onChange: () => false
+  onChange: jest.fn()
 };
 
 describe('Checkbox', () => {
@@ -14,10 +14,10 @@ describe('Checkbox', () => {
     expect(wrapper.text()).toContain('Label text');
   });
 
-  it('has checked state according to props', () => {
+  it('calls onChange when checked', () => {
     const wrapper = mount(<Checkbox {...props} />);
-    expect(wrapper.props().checked).toBe(false);
-    wrapper.setProps({checked: true});
-    expect(wrapper.props().checked).toBe(true);
+    const input = wrapper.find('input');
+    input.simulate('change', {checked: true});
+    expect(wrapper.props().onChange).toHaveBeenCalledTimes(1);
   });
 });

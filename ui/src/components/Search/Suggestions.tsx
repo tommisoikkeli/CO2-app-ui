@@ -19,12 +19,12 @@ export const Suggestions: React.SFC<ISuggestionsProps> = ({items, isVisible, onI
     <div className="suggestions-no-results">
       <span>No countries found!</span>
     </div>
-  )
+  );
   
   return (
     <div className={`suggestions-container ${isVisible ? 'visible' : ''}`}>
       {getSuggestions()}
       {isVisible && !items.length && noResultsFound()}
     </div>
-  )
+  );
 }
