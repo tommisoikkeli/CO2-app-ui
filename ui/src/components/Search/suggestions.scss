@@ -1,13 +1,14 @@
 .suggestions-container {
-  border: 1px solid grey;
+  border: 1px solid $border-gray;
+  border-top: none;
   padding: 5px;
   max-height: 160px;
   overflow: scroll;
   position: absolute;
   width: calc(100% - 12px);
-  border-radius: 3px;
   background: $white;
   z-index: 1;
+  box-shadow: 1px 1px 1px 1px $box-shadow-gray;
   display: none;
   &.visible {
     display: block;

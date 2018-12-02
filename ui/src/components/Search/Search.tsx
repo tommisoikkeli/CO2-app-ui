@@ -86,14 +86,15 @@ class Search extends React.Component<ISearchProps, ISearchState> {
               onChange={event => this.onInputChange(event)}
               onClearButtonClick={this.onClearButtonClick}
             />
-            <Suggestions items={this.props.suggestions}
+            <Suggestions
+              items={this.props.suggestions}
               isVisible={this.state.suggestionsVisible}
               onItemClick={event => this.onSuggestionItemsClick(event)}/>
           </div>
           <Button
             text='Search'
             type={ButtonType.DEFAULT}
-            onClick={() => console.log('yaah')}
+            onClick={() => console.log(this.state.value)}
             className='search-button'
             disabled={!this.isSearchLengthOverOne()}
           />
