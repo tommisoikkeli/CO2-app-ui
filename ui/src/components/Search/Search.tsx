@@ -5,15 +5,23 @@ import {Checkbox} from '../Checkbox/Checkbox';
 import {filterCountries} from '../../redux/modules/Search/searchActions';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
+import {Suggestions} from './Suggestions';
+import {IAppState} from '../../redux/appState';
 
 interface ISearchProps {
+  suggestions: string[];
   suggestCountries: (searchTerm: string) => void;
 }
 
 interface ISearchState {
   value: string;
   checkboxChecked: boolean;
+  suggestionsVisible: boolean;
 }
+
+const mapStateToProps = (state: IAppState) => ({
+  suggestions: state.search.filteredCountries
+});
 
 const mapDispatchToProps = (dispatch) => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm))
@@ -24,7 +32,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     super(props);
     this.state = {
       value: '',
-      checkboxChecked: false
+      checkboxChecked: false,
+      suggestionsVisible: false
     };
   }
 
@@ -34,7 +43,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   };
 
   private onClearButtonClick = (): void => {
-    this.setState({value: ''});
+    this.setState({
+      value: '',
+      suggestionsVisible: false
+    });
     this.getSuggestions();
   };
 
@@ -43,22 +55,41 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   };
 
   private getSuggestions = debounce(() => {
+    if (this.isSearchLengthOverOne()) {
+      this.setState({suggestionsVisible: true});
+    } else {
+      this.setState({
+        suggestionsVisible: false
+      });
+    }
     const {value} = this.state;
     this.isSearchLengthOverOne() && this.props.suggestCountries(value);
   }, 300);
 
   private isSearchLengthOverOne = () => this.state.value.length > 1;
 
+  private onSuggestionItemsClick = (item: string): void => {
+    this.setState({
+      value: item,
+      suggestionsVisible: false
+    });
+  }
+
   public render() {
     return (
       <div className='search'>
         <div className='input-block'>
-          <TextInput
-            placeholder='Search for a country'
-            value={this.state.value}
-            onChange={event => this.onInputChange(event)}
-            onClearButtonClick={this.onClearButtonClick}
-          />
+          <div className='search-and-suggestions'>
+            <TextInput
+              placeholder='Search for a country'
+              value={this.state.value}
+              onChange={event => this.onInputChange(event)}
+              onClearButtonClick={this.onClearButtonClick}
+            />
+            <Suggestions items={this.props.suggestions}
+              isVisible={this.state.suggestionsVisible}
+              onItemClick={event => this.onSuggestionItemsClick(event)}/>
+          </div>
           <Button
             text='Search'
             type={ButtonType.DEFAULT}
@@ -80,4 +111,4 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Search)
+export default connect(mapStateToProps, mapDispatchToProps)(Search)

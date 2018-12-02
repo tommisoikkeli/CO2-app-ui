@@ -1,0 +1,27 @@
+.suggestions-container {
+  border: 1px solid grey;
+  padding: 5px;
+  max-height: 160px;
+  overflow: scroll;
+  position: absolute;
+  width: calc(100% - 12px);
+  border-radius: 3px;
+  background: $white;
+  z-index: 1;
+  display: none;
+  &.visible {
+    display: block;
+  }
+
+  .suggestion-item {
+    padding: 3px;
+    cursor: pointer;
+    &:hover {
+      background: darken($white, 5%);
+    }
+  }
+
+  .suggestions-no-results {
+    color: $red;
+  }
+}
