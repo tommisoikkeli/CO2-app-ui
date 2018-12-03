@@ -4,10 +4,14 @@ import {includes, isEmpty} from 'lodash';
 
 export interface ISearchReduxState {
   filteredCountries: string[];
+  emissionsForCountry: any;
+  loading: boolean;
 }
 
 const initialState: ISearchReduxState = {
-  filteredCountries: []
+  filteredCountries: [],
+  emissionsForCountry: [],
+  loading: false
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -20,6 +24,23 @@ export const searchReducer = (state = initialState, action) => {
         ...state,
         filteredCountries
       };
+    case SearchActionTypes.FETCH_DATA_EXECUTING:
+      return {
+        ...state,
+        loading: true
+      };
+    case SearchActionTypes.FETCH_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        emissionsForCountry: action.payload
+      };
+    case SearchActionTypes.FETCH_DATA_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        emissionsForCountry: []
+      }
     default:
       return state;
   }

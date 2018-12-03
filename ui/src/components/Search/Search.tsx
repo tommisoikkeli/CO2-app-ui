@@ -2,7 +2,7 @@ import * as React from 'react';
 import {TextInput} from '../TextInput/TextInput';
 import {Button, ButtonType} from '../Button/Button';
 import {Checkbox} from '../Checkbox/Checkbox';
-import {filterCountries} from '../../redux/modules/Search/searchActions';
+import {filterCountries, getEmissionData} from '../../redux/modules/Search/searchActions';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {Suggestions} from './Suggestions';
@@ -11,6 +11,7 @@ import {IAppState} from '../../redux/appState';
 interface ISearchProps {
   suggestions: string[];
   suggestCountries: (searchTerm: string) => void;
+  getEmissionDataForCountry: (country: string) => void;
 }
 
 interface ISearchState {
@@ -24,7 +25,8 @@ const mapStateToProps = (state: IAppState) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm))
+  suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
+  getEmissionDataForCountry: (country: string) => dispatch(getEmissionData(country))
 });
 
 class Search extends React.Component<ISearchProps, ISearchState> {
@@ -72,6 +74,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
     });
   }
 
+  private getDataFromSearchClick = () => {
+    this.props.getEmissionDataForCountry(this.state.value)
+  }
+
   public render() {
     return (
       <div className='search'>
@@ -91,7 +97,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
           <Button
             text='Search'
             type={ButtonType.DEFAULT}
-            onClick={() => console.log(this.state.value)}
+            onClick={this.getDataFromSearchClick}
             className='search-button'
             disabled={!this.isSearchLengthOverOne()}
           />

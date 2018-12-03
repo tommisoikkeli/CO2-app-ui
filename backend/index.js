@@ -1,8 +1,10 @@
-const express = require("express");
+const express = require('express');
 const request = require('request');
+const cors = require('cors');
 const converter = require('./countryNameConverter');
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT || 8080;
 
 const PER_PAGE = 60;
