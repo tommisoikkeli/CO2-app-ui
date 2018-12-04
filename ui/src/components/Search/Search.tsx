@@ -2,15 +2,17 @@ import * as React from 'react';
 import {TextInput} from '../TextInput/TextInput';
 import {Button, ButtonType} from '../Button/Button';
 import {Checkbox} from '../Checkbox/Checkbox';
-import {filterCountries, getEmissionData} from '../../redux/modules/Search/searchActions';
+import {filterCountries, searchDataForCountry} from '../../redux/modules/Search/searchActions';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {Suggestions} from './Suggestions';
 import {IAppState} from '../../redux/appState';
+import { getEmissionData } from '../../redux/modules/Results/resultsActions';
 
 interface ISearchProps {
   suggestions: string[];
   suggestCountries: (searchTerm: string) => void;
+  saveCountryName: (searchTerm: string) => void;
   getEmissionDataForCountry: (country: string) => void;
 }
 
@@ -26,6 +28,7 @@ const mapStateToProps = (state: IAppState) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
+  saveCountryName: (searchTerm: string) => dispatch(searchDataForCountry(searchTerm)),
   getEmissionDataForCountry: (country: string) => dispatch(getEmissionData(country))
 });
 
@@ -75,7 +78,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
   }
 
   private getDataFromSearchClick = () => {
-    this.props.getEmissionDataForCountry(this.state.value)
+    const {value} = this.state;
+    this.props.saveCountryName(value);
+    this.props.getEmissionDataForCountry(value)
   }
 
   public render() {
