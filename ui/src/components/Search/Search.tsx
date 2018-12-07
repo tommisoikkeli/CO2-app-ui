@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {TextInput} from '../TextInput/TextInput';
 import {Button, ButtonType} from '../Button/Button';
-import {Checkbox} from '../Checkbox/Checkbox';
 import {filterCountries, searchDataForCountry} from '../../redux/modules/Search/searchActions';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
@@ -18,7 +17,6 @@ interface ISearchProps {
 
 interface ISearchState {
   value: string;
-  checkboxChecked: boolean;
   suggestionsVisible: boolean;
 }
 
@@ -32,12 +30,11 @@ const mapDispatchToProps = (dispatch) => ({
   getEmissionDataForCountry: (country: string) => dispatch(getEmissionData(country))
 });
 
-class Search extends React.Component<ISearchProps, ISearchState> {
+export class Search extends React.Component<ISearchProps, ISearchState> {
   public constructor(props) {
     super(props);
     this.state = {
       value: '',
-      checkboxChecked: false,
       suggestionsVisible: false
     };
   }
@@ -53,10 +50,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
       suggestionsVisible: false
     });
     this.getSuggestions();
-  };
-
-  private onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({checkboxChecked: !this.state.checkboxChecked});
   };
 
   private getSuggestions = debounce(() => {
@@ -79,8 +72,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
   private getDataFromSearchClick = () => {
     const {value} = this.state;
+    this.setState({suggestionsVisible: false});
     this.props.saveCountryName(value);
-    this.props.getEmissionDataForCountry(value)
+    this.props.getEmissionDataForCountry(value);
   }
 
   public render() {
@@ -105,14 +99,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
             onClick={this.getDataFromSearchClick}
             className='search-button'
             disabled={!this.isSearchLengthOverOne()}
-          />
-        </div>
-        <div className='search-checkbox-wrapper'>
-          <Checkbox
-            name='search-checkbox'
-            label='Per capita'
-            onChange={this.onCheckboxChange}
-            checked={this.state.checkboxChecked}
           />
         </div>
       </div>

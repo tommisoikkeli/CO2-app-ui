@@ -1,6 +1,5 @@
 .search {
   display: flex;
-  flex-direction: column;
   margin-left: auto;
   margin-right: auto;
 
@@ -13,10 +12,6 @@
     .search-and-suggestions {
       position: relative;
     }
-  }
-
-  .search-checkbox-wrapper {
-    margin-top: 30px;
   }
 
   .search-button {
