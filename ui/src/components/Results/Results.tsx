@@ -2,56 +2,44 @@ import * as React from 'react';
 import {IAppState} from '../../redux/appState';
 import {connect} from 'react-redux';
 import {Loading} from './Loading';
-import {Checkbox} from '../Checkbox/Checkbox';
 
 interface IResultsProps {
   isLoading: boolean;
   emissionData: any;
-}
-
-interface IResultsState {
-  checkboxChecked: boolean
+  searchedCountry: string;
 }
 
 const mapStateToProps = (state: IAppState) => ({
   isLoading: state.results.loading,
-  emissionData: state.results.emissionsForCountry
+  emissionData: state.results.emissionsForCountry,
+  searchedCountry: state.search.searchedCountry
 });
 
-class Results extends React.Component<IResultsProps, IResultsState> {
-  public constructor(props) {
-    super(props);
-    this.state = {
-      checkboxChecked: false
-    }
-  }
-
+class Results extends React.Component<IResultsProps, any> {
   private renderLoadingSpinner = () => {
     return this.props.isLoading ? <Loading /> : null;
   }
 
-  private renderCheckbox = () => {
-    return this.props.emissionData.length ? (
-      <div className='checkbox-wrapper'>
-        <Checkbox
-          name='search-checkbox'
-          label='Per capita'
-          onChange={this.onCheckboxChange}
-          checked={this.state.checkboxChecked}
-        />
+  private renderResultsContent = () => {
+    return this.props.searchedCountry.length && !this.props.isLoading ? (
+      <div className='results-title'>
+        <span>Results for {this.props.searchedCountry}</span>
+        {this.props.emissionData[1].map((data, i) => (
+          <div key={i}>
+            <span>{data.value}</span>
+          </div>
+        ))}
       </div>
-    ) : null
+    ) : null;
   }
-
-  private onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({checkboxChecked: !this.state.checkboxChecked});
-  };
 
   public render() {
     return (
-      <div className='results-container'>
+      <div className='results-top-container'>
         {this.renderLoadingSpinner()}
-        {this.renderCheckbox()}
+        <div className='results-content-container'>
+          {this.renderResultsContent()}
+        </div>
       </div>
     );
   }

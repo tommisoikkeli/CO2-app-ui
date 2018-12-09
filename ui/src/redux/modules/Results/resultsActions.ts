@@ -1,5 +1,5 @@
 import {createAction} from '../../actionHelper';
-import {fetchDataFromUrl, EMISSIONS_ENDPOINT} from '../../../rest/restUtils';
+import {fetchDataFromUrl} from '../../../rest/restUtils';
 
 export enum ResultsActionTypes {
   FETCH_DATA_EXECUTING = 'results/FETCH_DATA_EXECUTING',
@@ -10,17 +10,20 @@ export enum ResultsActionTypes {
 export const fetchDataExecuting = () =>
   createAction(ResultsActionTypes.FETCH_DATA_EXECUTING);
 
-export const fetchDataSuccess = data =>
+export const fetchEmissionDataSuccess = data =>
+  createAction(ResultsActionTypes.FETCH_DATA_SUCCESS, data);
+
+export const fetchPopulationDataSuccess = data =>
   createAction(ResultsActionTypes.FETCH_DATA_SUCCESS, data);
 
 export const fetchDataFailure = () =>
   createAction(ResultsActionTypes.FETCH_DATA_FAILURE);
 
-export const getEmissionData = (country: string) => {
+export const getEmissionData = (endpoint: string, country: string) => {
   return dispatch => {
     dispatch(fetchDataExecuting());
-    return fetchDataFromUrl(EMISSIONS_ENDPOINT, country)
-      .then(emissions => dispatch(fetchDataSuccess(emissions))
+    return fetchDataFromUrl(endpoint, country)
+      .then(emissions => dispatch(fetchEmissionDataSuccess(emissions))
     );
   };
 };
