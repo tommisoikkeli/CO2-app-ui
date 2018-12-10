@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IAppState} from '../../redux/appState';
 import {connect} from 'react-redux';
 import {Loading} from './Loading';
+import LineChart from './LineChart/LineChart';
 
 interface IResultsProps {
   isLoading: boolean;
@@ -24,11 +25,7 @@ class Results extends React.Component<IResultsProps, any> {
     return this.props.searchedCountry.length && !this.props.isLoading ? (
       <div className='results-title'>
         <span>Results for {this.props.searchedCountry}</span>
-        {this.props.emissionData[1].map((data, i) => (
-          <div key={i}>
-            <span>{data.value}</span>
-          </div>
-        ))}
+        <LineChart data={this.props.emissionData[1]}/>
       </div>
     ) : null;
   }
