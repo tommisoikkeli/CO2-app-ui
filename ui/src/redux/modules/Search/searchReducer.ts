@@ -4,12 +4,12 @@ import {includes, isEmpty} from 'lodash';
 
 export interface ISearchReduxState {
   filteredCountries: string[];
-  searchedCountry: string;
+  searchedCountries: string[];
 }
 
 const initialState: ISearchReduxState = {
   filteredCountries: [],
-  searchedCountry: ''
+  searchedCountries: []
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -25,7 +25,7 @@ export const searchReducer = (state = initialState, action) => {
     case SearchActionTypes.SEARCH_DATA_FOR_COUNTRY:
       return {
         ...state,
-        searchedCountry: action.payload
+        searchedCountries: [...state.searchedCountries, action.payload]
       };
     default:
       return state;

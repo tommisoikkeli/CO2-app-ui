@@ -3,18 +3,17 @@ import {IAppState} from '../../redux/appState';
 import {connect} from 'react-redux';
 import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
-import {isNil} from 'lodash';
 
 interface IResultsProps {
   isLoading: boolean;
   emissionData: any;
-  searchedCountry: string;
+  searchedCountries: string[];
 }
 
 const mapStateToProps = (state: IAppState) => ({
   isLoading: state.results.loading,
   emissionData: state.results.emissionsForCountry,
-  searchedCountry: state.search.searchedCountry
+  searchedCountries: state.search.searchedCountries
 });
 
 class Results extends React.Component<IResultsProps, any> {
@@ -23,10 +22,9 @@ class Results extends React.Component<IResultsProps, any> {
   }
 
   private renderResultsContent = () => {
-    return this.props.searchedCountry.length && !this.props.isLoading ? (
-      <div className='results-title'>
-        <span>Results for {this.props.searchedCountry}</span>
-        <LineChart data={this.props.emissionData[1].filter(item => !isNil(item.value))}/>
+    return this.props.searchedCountries.length && !this.props.isLoading ? (
+      <div className='results'>
+        <LineChart data={this.props.emissionData}/>
       </div>
     ) : null;
   }

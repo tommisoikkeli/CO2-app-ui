@@ -15,7 +15,7 @@ interface ISearchProps {
   suggestCountries: (searchTerm: string) => void;
   saveCountryName: (searchTerm: string) => void;
   getEmissionDataForCountry: (endpoint: string, country: string) => void;
-  searchedCountry: string;
+  searchedCountries: string[];
 }
 
 interface ISearchState {
@@ -26,7 +26,7 @@ interface ISearchState {
 
 const mapStateToProps = (state: IAppState) => ({
   suggestions: state.search.filteredCountries,
-  searchedCountry: state.search.searchedCountry
+  searchedCountries: state.search.searchedCountries
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -95,7 +95,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
   }
 
   private renderCheckbox = () => {
-    return this.props.searchedCountry ? (
+    return this.props.searchedCountries.length ? (
       <div className='checkbox-wrapper'>
         <Checkbox
           name='search-checkbox'

@@ -13,6 +13,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
   }
 
   private drawChart = data => {
+    const merged: LineDataType[] = d3.merge(data.map(d => d.entries));
     const svgWidth = 700;
     const svgHeight = 500;
     const margins = {
@@ -30,39 +31,41 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const g = svg
       .append('g')
       .attr('transform', `translate(${margins.left}, ${margins.top})`);
-    const x = d3.scaleLinear().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+    const xScale = d3.scaleLinear().rangeRound([0, width]);
+    const yScale = d3.scaleLinear().rangeRound([height, 0]);
     const line = d3
       .line<LineDataType>()
-      .x(d => x(d.date))
-      .y(d => y(d.value));
-    x.domain(d3.extent<LineDataType>(data, d => d.date) as any);
-    y.domain(d3.extent<LineDataType>(data, d => d.value) as any);
-    g.append('g')
-      .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x).tickFormat(d3.format('d')));
+      .x(d => xScale(d.date))
+      .y(d => yScale(d.value))
+      .curve(d3.curveBasis);
+
+    xScale.domain(d3.extent<LineDataType>(merged, d => d.date) as any);
+    yScale.domain([0, d3.max<LineDataType>(merged, d => d.value) as any]);
 
     g.append('g')
-      .call(d3.axisLeft(y))
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale).tickFormat(d3.format('d')));
+
+    g.append('g')
+      .call(d3.axisLeft(yScale))
       .append('text')
       .attr('fill', '#000')
       .attr('transform', 'rotate(-90)')
       .attr('y', 6)
       .attr('dy', '0.70em')
       .attr('text-anchor', 'end')
-      .text(this.getIndicatorText(data));
+      .text('asdad');
 
-    g.append('path')
-      .datum(data)
+    g.selectAll('.line')
+      .data(data)
+      .enter()
+      .append('path')
+      .attr('class', 'line')
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
-      .attr('stroke-linejoin', 'round')
-      .attr('stroke-linecap', 'round')
       .attr('stroke-width', 2)
-      .attr('d', line);
+      .attr('d', (d: any) => line(d.entries));
   };
-
-  private getIndicatorText = data => data[0].indicator.value;
 
   public render() {
     return (

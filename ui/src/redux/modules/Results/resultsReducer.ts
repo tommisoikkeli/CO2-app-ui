@@ -1,4 +1,5 @@
 import {ResultsActionTypes} from './resultsActions';
+import { isNull } from 'util';
 
 export interface IResultsReduxState {
   emissionsForCountry: any;
@@ -21,7 +22,7 @@ export const resultsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        emissionsForCountry: action.payload
+        emissionsForCountry: [...state.emissionsForCountry, reduceResponse(action.payload[1])]
       };
     case ResultsActionTypes.FETCH_DATA_FAILURE:
       return {
@@ -33,3 +34,15 @@ export const resultsReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+const reduceResponse = data => {
+  const filteredData = data.filter(item => !isNull(item.value));
+  const reduced = filteredData.reduce((acc, item) => {
+    acc.push({date: item.date, value: item.value});
+    return acc;
+  }, []);
+  return {
+    key: data[0].country.value,
+    entries: reduced
+  }
+}
