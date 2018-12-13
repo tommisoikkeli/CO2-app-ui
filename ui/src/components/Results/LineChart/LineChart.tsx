@@ -14,6 +14,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
 
   private drawChart = data => {
     const merged: LineDataType[] = d3.merge(data.map(d => d.entries));
+    const lineColors = ['tomato', 'steelblue', 'yellow', 'green', 'red'];
+
     const svgWidth = 700;
     const svgHeight = 500;
     const margins = {
@@ -37,18 +39,19 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .line<LineDataType>()
       .x(d => xScale(d.date))
       .y(d => yScale(d.value))
-      .curve(d3.curveBasis);
 
     xScale.domain(d3.extent<LineDataType>(merged, d => d.date) as any);
     yScale.domain([0, d3.max<LineDataType>(merged, d => d.value) as any]);
 
     g.append('g')
       .attr('transform', `translate(0, ${height})`)
+      .attr('class', 'axis')
       .call(d3.axisBottom(xScale).tickFormat(d3.format('d')));
 
     g.append('g')
       .call(d3.axisLeft(yScale))
       .append('text')
+      .attr('class', 'axis')
       .attr('fill', '#000')
       .attr('transform', 'rotate(-90)')
       .attr('y', 6)
@@ -61,10 +64,17 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .enter()
       .append('path')
       .attr('class', 'line')
-      .attr('fill', 'none')
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 2)
+      .attr('stroke', (d, i) => lineColors[i])
       .attr('d', (d: any) => line(d.entries));
+
+    g.selectAll('.dot')
+      .data(merged)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('r', 2)
+      .attr('cx', (d: any) => xScale(d.date))
+      .attr('cy', (d: any) => yScale(d.value));
   };
 
   public render() {
