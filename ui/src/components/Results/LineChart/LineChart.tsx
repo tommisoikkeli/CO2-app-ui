@@ -14,7 +14,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
 
   private drawChart = data => {
     const merged: LineDataType[] = d3.merge(data.map(d => d.entries));
-    const lineColors = ['tomato', 'steelblue', 'yellow', 'green', 'red'];
+    const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
 
     const svgWidth = 700;
     const svgHeight = 500;
@@ -38,7 +38,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const line = d3
       .line<LineDataType>()
       .x(d => xScale(d.date))
-      .y(d => yScale(d.value))
+      .y(d => yScale(d.value));
 
     xScale.domain(d3.extent<LineDataType>(merged, d => d.date) as any);
     yScale.domain([0, d3.max<LineDataType>(merged, d => d.value) as any]);
@@ -74,7 +74,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('class', 'dot')
       .attr('r', 2)
       .attr('cx', (d: any) => xScale(d.date))
-      .attr('cy', (d: any) => yScale(d.value));
+      .attr('cy', (d: any) => yScale(d.value))
   };
 
   public render() {
