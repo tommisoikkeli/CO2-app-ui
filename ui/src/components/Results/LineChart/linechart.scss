@@ -14,14 +14,15 @@
 
     .line {
       fill: none;
-      stroke-width: 2;
+      stroke-width: 2.5;
     }
 
     .dot {
       fill: $black;
       opacity: 0.5;
-      stroke: none;
-      stroke-width: 40px;
+      stroke-opacity: 0;
+      stroke-width: 15px;
+      stroke: $black;
     }
   }
   .tooltip {

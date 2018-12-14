@@ -16,11 +16,11 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const merged: LineDataType[] = d3.merge(data.map(d => d.entries));
     const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
 
-    const svgWidth = 700;
-    const svgHeight = 500;
+    const svgWidth = 800;
+    const svgHeight = 550;
     const margins = {
       top: 20,
-      right: 20,
+      right: 100,
       bottom: 30,
       left: 80
     };
@@ -67,12 +67,23 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('stroke', (d, i) => lineColors[i])
       .attr('d', (d: any) => line(d.entries));
 
+    g.selectAll('.line-text')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'line-text')
+      .attr('transform', (d: any) => `translate(${width}, ${yScale(d.entries[0].value)})`)
+      .attr('fill', (d, i) => lineColors[i])
+      .attr('x', 10)
+      .attr('dy', '1em')
+      .text((d: any) => d.key);
+
     g.selectAll('.dot')
       .data(merged)
       .enter()
       .append('circle')
       .attr('class', 'dot')
-      .attr('r', 2)
+      .attr('r', 3)
       .attr('cx', (d: any) => xScale(d.date))
       .attr('cy', (d: any) => yScale(d.value))
       .on('mouseover', function(d) {
@@ -94,7 +105,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
         d3.select(this)
           .transition()
           .duration(30)
-          .attr('r', 2);
+          .attr('r', 3);
         d3.select('.tooltip')
           .transition()
           .duration(30)
