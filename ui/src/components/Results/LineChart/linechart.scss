@@ -18,8 +18,18 @@
     }
 
     .dot {
-      fill: none;
-      stroke: black;
+      fill: $black;
+      opacity: 0.5;
+      stroke: none;
+      stroke-width: 40px;
     }
+  }
+  .tooltip {
+    position: absolute;
+    opacity: 0;
+    background: $tooltip-background-color;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
   }
 }

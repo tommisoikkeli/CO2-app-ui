@@ -75,12 +75,38 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('r', 2)
       .attr('cx', (d: any) => xScale(d.date))
       .attr('cy', (d: any) => yScale(d.value))
+      .on('mouseover', function(d) {
+        d3.select(this)
+          .transition()
+          .duration(30)
+          .attr('r', 5);
+        d3.select('.tooltip')
+          .html(
+            `<span>Year: ${d.date}</span><br/><span>Value: ${d.value}</span>`
+          )
+          .transition()
+          .duration(30)
+          .style('opacity', 1)
+          .style('left', `${d3.event.pageX - 10}px`)
+          .style('top', `${d3.event.pageY + 10}px`);
+      })
+      .on('mouseout', function() {
+        d3.select(this)
+          .transition()
+          .duration(30)
+          .attr('r', 2);
+        d3.select('.tooltip')
+          .transition()
+          .duration(30)
+          .style('opacity', 0);
+      });
   };
 
   public render() {
     return (
       <div className='results-line-chart'>
         <svg id='data-chart' />
+        <div className='tooltip' />
       </div>
     );
   }
