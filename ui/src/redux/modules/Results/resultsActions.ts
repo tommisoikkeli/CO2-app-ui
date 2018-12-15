@@ -6,12 +6,17 @@ import {
 } from '../../../rest/restUtils';
 
 export enum ResultsActionTypes {
+  SAVE_COUNTRY_NAME = 'results/SAVE_COUNTRY_NAME',
   FETCH_DATA_EXECUTING = 'results/FETCH_DATA_EXECUTING',
   FETCH_TOTAL_DATA_SUCCESS = 'results/FETCH_TOTAL_DATA_SUCCESS',
   FETCH_PC_DATA_SUCCESS = 'results/FETCH_PC_DATA_SUCCESS',
   FETCH_DATA_FAILURE = 'results/FETCH_DATA_FAILURE',
-  CONVERT_FROM_PC_TO_TOTAL_SUCCESS = 'results/CONVERT_FROM_PC_TO_TOTAL_SUCCESS'
+  CONVERT_FROM_PC_TO_TOTAL_SUCCESS = 'results/CONVERT_FROM_PC_TO_TOTAL_SUCCESS',
+  CLEAR_COUNTRY_FROM_CHART = 'results/CLEAR_COUNTRY_FROM_CHART'
 }
+
+export const saveCountryName = (country: string) =>
+  createAction(ResultsActionTypes.SAVE_COUNTRY_NAME, country);
 
 export const fetchDataExecuting = () =>
   createAction(ResultsActionTypes.FETCH_DATA_EXECUTING);
@@ -27,6 +32,9 @@ export const convertFromPerCapitaToTotalSuccess = data =>
 
 export const fetchDataFailure = () =>
   createAction(ResultsActionTypes.FETCH_DATA_FAILURE);
+
+export const clearCountryFromChart = (country: string) =>
+  createAction(ResultsActionTypes.CLEAR_COUNTRY_FROM_CHART, country);
 
 export const getEmissionData = (country: string) => {
   return dispatch => {

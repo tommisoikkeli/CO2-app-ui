@@ -22,6 +22,13 @@ export default class LineChart extends React.Component<ILineChartProps> {
     this.drawChart(this.props.data);
   }
 
+  public componentDidUpdate() {
+    // called when a country is removed from the chart
+    // remove all content from the svg and draw it again with the updated data
+    d3.select('svg').selectAll('*').remove();
+    this.drawChart(this.props.data);
+  }
+
   private drawChart = (data: IData[]) => {
     // all entries in one array, used in scatter plot generation
     const merged: ILineDataType[] = d3.merge(data.map(d => d.entries));
@@ -47,6 +54,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('transform', `translate(${margins.left}, ${margins.top})`);
     const xScale = d3.scaleLinear().rangeRound([0, width]);
     const yScale = d3.scaleLinear().rangeRound([height, 0]);
+    
     // line generator
     const line = d3
       .line<ILineDataType>()

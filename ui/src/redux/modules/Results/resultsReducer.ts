@@ -1,7 +1,9 @@
-import {ResultsActionTypes, getEmissionsPerCapita} from './resultsActions';
+import {ResultsActionTypes} from './resultsActions';
 import {isNull} from 'util';
+import {includes} from 'lodash';
 
 export interface IResultsReduxState {
+  searchedCountries: string[];
   totalEmissionsForCountries: any;
   emissionsPerCapita: any;
   loading: boolean;
@@ -9,6 +11,7 @@ export interface IResultsReduxState {
 }
 
 const initialState: IResultsReduxState = {
+  searchedCountries: [],
   totalEmissionsForCountries: [],
   emissionsPerCapita: [],
   loading: false,
@@ -17,6 +20,12 @@ const initialState: IResultsReduxState = {
 
 export const resultsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ResultsActionTypes.SAVE_COUNTRY_NAME: {
+      return {
+        ...state,
+        searchedCountries: [...state.searchedCountries, action.payload]
+      };
+    }
     case ResultsActionTypes.FETCH_DATA_EXECUTING:
       return {
         ...state,
@@ -52,6 +61,19 @@ export const resultsReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         totalEmissionsForCountries: []
+      };
+    case ResultsActionTypes.CLEAR_COUNTRY_FROM_CHART:
+      return {
+        ...state,
+        searchedCountries: state.searchedCountries.filter(
+          country => country !== action.payload
+        ),
+        totalEmissionsForCountries: state.totalEmissionsForCountries.filter(
+          entry => entry.country !== action.payload
+        ),
+        emissionsPerCapita: state.emissionsPerCapita.filter(
+          entry => entry.country !== action.payload
+        )
       };
     default:
       return state;

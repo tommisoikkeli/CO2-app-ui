@@ -9,16 +9,15 @@
 
     .searched-country {
       margin-right: 30px;
-      border: 1px solid black;
-      border-radius: 10px;
+      border: 1px solid $border-gray;
       padding: 5px;
-      background-color: whitesmoke;
       display: flex;
       justify-content: space-between;
+      box-shadow: 1px 1px 0 0 $border-gray;
 
       .clear-country-button {
         cursor: pointer;
-        padding-left: 10px;
+        margin-left: 10px;
       }
     }
   }

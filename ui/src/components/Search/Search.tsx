@@ -2,12 +2,12 @@ import * as React from 'react';
 import {TextInput} from '../TextInput/TextInput';
 import {Button, ButtonType} from '../Button/Button';
 import {Checkbox} from '../Checkbox/Checkbox';
-import {filterCountries, searchDataForCountry} from '../../redux/modules/Search/searchActions';
+import {filterCountries} from '../../redux/modules/Search/searchActions';
 import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {Suggestions} from './Suggestions';
 import {IAppState} from '../../redux/appState';
-import {getEmissionData, getEmissionsPerCapita, convertPerCapitaResultsToTotal} from '../../redux/modules/Results/resultsActions';
+import {getEmissionData, getEmissionsPerCapita, convertPerCapitaResultsToTotal, saveCountryName} from '../../redux/modules/Results/resultsActions';
 
 interface ISearchProps {
   suggestions: string[];
@@ -27,12 +27,12 @@ interface ISearchState {
 
 const mapStateToProps = (state: IAppState) => ({
   suggestions: state.search.filteredCountries,
-  searchedCountries: state.search.searchedCountries
+  searchedCountries: state.results.searchedCountries
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
-  saveCountryName: (searchTerm: string) => dispatch(searchDataForCountry(searchTerm)),
+  saveCountryName: (searchTerm: string) => dispatch(saveCountryName(searchTerm)),
   getEmissionDataForCountry: (country: string) => dispatch(getEmissionData(country)),
   getEmissionsPerCapita: (countries: string[]) => dispatch(getEmissionsPerCapita(countries)),
   convertFromPerCapitaToTotal: (countries: string[]) => dispatch(convertPerCapitaResultsToTotal(countries))

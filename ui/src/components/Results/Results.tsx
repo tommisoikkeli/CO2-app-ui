@@ -3,7 +3,8 @@ import {IAppState} from '../../redux/appState';
 import {connect} from 'react-redux';
 import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
-import { ResultsHeader } from './ResultsHeader';
+import {ResultsHeader} from './ResultsHeader';
+import {clearCountryFromChart} from '../../redux/modules/Results/resultsActions';
 
 interface IResultsProps {
   isLoading: boolean;
@@ -11,14 +12,19 @@ interface IResultsProps {
   perCapitaData: any;
   searchedCountries: string[];
   isPerCapita: boolean;
+  clearCountryFromChart: (country: string) => void;
 }
 
 const mapStateToProps = (state: IAppState) => ({
   isLoading: state.results.loading,
   emissionData: state.results.totalEmissionsForCountries,
   perCapitaData: state.results.emissionsPerCapita,
-  searchedCountries: state.search.searchedCountries,
+  searchedCountries: state.results.searchedCountries,
   isPerCapita: state.results.isPerCapita
+});
+
+const mapDispatchToProps = dispatch => ({
+  clearCountryFromChart: (country: string) => dispatch(clearCountryFromChart(country))
 });
 
 class Results extends React.Component<IResultsProps, any> {
@@ -27,7 +33,7 @@ class Results extends React.Component<IResultsProps, any> {
   };
 
   private onClearCountryClick = (country: string) => {
-    console.log(country);
+    this.props.clearCountryFromChart(country);
   }
 
   private renderResultsContent = () => {
@@ -61,5 +67,5 @@ class Results extends React.Component<IResultsProps, any> {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Results);
