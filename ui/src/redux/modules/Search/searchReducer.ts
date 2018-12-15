@@ -27,6 +27,11 @@ export const searchReducer = (state = initialState, action) => {
         ...state,
         searchedCountries: [...state.searchedCountries, action.payload]
       };
+    case SearchActionTypes.CLEAR_COUNTRY_FROM_CHART:
+    return {
+      ...state,
+      searchedCountries: state.searchedCountries.filter(country => country !== action.payload)
+    }
     default:
       return state;
   }

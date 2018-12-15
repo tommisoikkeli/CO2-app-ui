@@ -1,14 +1,18 @@
-import {ResultsActionTypes} from './resultsActions';
-import { isNull } from 'util';
+import {ResultsActionTypes, getEmissionsPerCapita} from './resultsActions';
+import {isNull} from 'util';
 
 export interface IResultsReduxState {
-  emissionsForCountry: any;
+  totalEmissionsForCountries: any;
+  emissionsPerCapita: any;
   loading: boolean;
+  isPerCapita: boolean;
 }
 
 const initialState: IResultsReduxState = {
-  emissionsForCountry: [],
-  loading: false
+  totalEmissionsForCountries: [],
+  emissionsPerCapita: [],
+  loading: false,
+  isPerCapita: false
 };
 
 export const resultsReducer = (state = initialState, action) => {
@@ -18,17 +22,36 @@ export const resultsReducer = (state = initialState, action) => {
         ...state,
         loading: true
       };
-    case ResultsActionTypes.FETCH_DATA_SUCCESS:
+    case ResultsActionTypes.FETCH_TOTAL_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
-        emissionsForCountry: [...state.emissionsForCountry, reduceResponse(action.payload[1])]
+        totalEmissionsForCountries: [
+          ...state.totalEmissionsForCountries,
+          reduceResponse(action.payload[1])
+        ]
+      };
+    case ResultsActionTypes.FETCH_PC_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        emissionsPerCapita: action.payload.map(data => reduceResponse(data[1])),
+        isPerCapita: true
+      };
+    case ResultsActionTypes.CONVERT_FROM_PC_TO_TOTAL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        totalEmissionsForCountries: action.payload.map(data =>
+          reduceResponse(data[1])
+        ),
+        isPerCapita: false
       };
     case ResultsActionTypes.FETCH_DATA_FAILURE:
       return {
         ...state,
         loading: false,
-        emissionsForCountry: []
+        totalEmissionsForCountries: []
       };
     default:
       return state;
@@ -42,7 +65,8 @@ const reduceResponse = data => {
     return acc;
   }, []);
   return {
-    key: data[0].country.value,
+    country: data[0].country.value,
+    indicator: data[0].indicator.value,
     entries: reduced
-  }
-}
+  };
+};

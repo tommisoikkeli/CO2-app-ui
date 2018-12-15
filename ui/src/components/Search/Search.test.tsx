@@ -4,6 +4,7 @@ import {Search} from './Search';
 
 const props = {
   suggestions: ['Finland', 'Fiji'],
+  searchedCountries: [],
   suggestCountries: jest.fn(),
   saveCountryName: jest.fn(),
   getEmissionDataForCountry: jest.fn()

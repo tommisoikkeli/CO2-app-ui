@@ -4,7 +4,22 @@
   align-items: center;
   flex-direction: column;
 
-  .results-title {
-    font-weight: bold;
+  .results-header {
+    display: flex;
+
+    .searched-country {
+      margin-right: 30px;
+      border: 1px solid black;
+      border-radius: 10px;
+      padding: 5px;
+      background-color: whitesmoke;
+      display: flex;
+      justify-content: space-between;
+
+      .clear-country-button {
+        cursor: pointer;
+        padding-left: 10px;
+      }
+    }
   }
 }

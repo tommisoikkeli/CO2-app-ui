@@ -27,10 +27,20 @@
   }
   .tooltip {
     position: absolute;
-    opacity: 0;
+    visibility: hidden;
     background: $tooltip-background-color;
     color: white;
     font-weight: bold;
     padding: 5px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      border: solid;
+      border-color: $tooltip-background-color transparent transparent transparent;
+      border-width: 8px;
+      top: 5px;
+      left: -8px;
+    }
   }
 }

@@ -3,31 +3,49 @@ import {IAppState} from '../../redux/appState';
 import {connect} from 'react-redux';
 import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
+import { ResultsHeader } from './ResultsHeader';
 
 interface IResultsProps {
   isLoading: boolean;
   emissionData: any;
+  perCapitaData: any;
   searchedCountries: string[];
+  isPerCapita: boolean;
 }
 
 const mapStateToProps = (state: IAppState) => ({
   isLoading: state.results.loading,
-  emissionData: state.results.emissionsForCountry,
-  searchedCountries: state.search.searchedCountries
+  emissionData: state.results.totalEmissionsForCountries,
+  perCapitaData: state.results.emissionsPerCapita,
+  searchedCountries: state.search.searchedCountries,
+  isPerCapita: state.results.isPerCapita
 });
 
 class Results extends React.Component<IResultsProps, any> {
   private renderLoadingSpinner = () => {
     return this.props.isLoading ? <Loading /> : null;
+  };
+
+  private onClearCountryClick = (country: string) => {
+    console.log(country);
   }
 
   private renderResultsContent = () => {
-    return this.props.searchedCountries.length && !this.props.isLoading ? (
+    const {
+      isPerCapita,
+      perCapitaData,
+      emissionData,
+      searchedCountries,
+      isLoading
+    } = this.props;
+    const dataForChart = isPerCapita ? perCapitaData : emissionData;
+    return searchedCountries.length && !isLoading ? (
       <div className='results'>
-        <LineChart data={this.props.emissionData}/>
+        <ResultsHeader countries={searchedCountries} onClick={country => this.onClearCountryClick(country)}/>
+        <LineChart data={dataForChart} />
       </div>
     ) : null;
-  }
+  };
 
   public render() {
     return (
@@ -41,4 +59,7 @@ class Results extends React.Component<IResultsProps, any> {
   }
 }
 
-export default connect(mapStateToProps, null)(Results)
+export default connect(
+  mapStateToProps,
+  null
+)(Results);
