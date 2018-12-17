@@ -2,6 +2,7 @@
   margin-top: 10px;
   padding: 10px;
   background: $chart-background-color;
+  margin-bottom: 25px;
 
   svg {
     text {
@@ -29,8 +30,7 @@
     position: absolute;
     visibility: hidden;
     background: $tooltip-background-color;
-    color: white;
-    font-weight: bold;
+    color: $white;
     padding: 5px;
 
     &:before {

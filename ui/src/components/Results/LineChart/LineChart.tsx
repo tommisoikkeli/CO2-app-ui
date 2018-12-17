@@ -31,7 +31,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
 
   private drawChart = (data: IData[]) => {
     // all entries in one array, used in scatter plot generation
-    const merged: ILineDataType[] = d3.merge(data.map(d => d.entries));
+    const allEntries: ILineDataType[] = d3.merge(data.map(d => d.entries));
     const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
 
     // size attributes
@@ -62,8 +62,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .y(d => yScale(d.value));
 
     // get the value ranges from the data
-    xScale.domain(d3.extent<ILineDataType>(merged, d => d.date) as any);
-    yScale.domain([0, d3.max<ILineDataType>(merged, d => d.value) as any]);
+    xScale.domain(d3.extent<ILineDataType>(allEntries, d => d.date) as any);
+    yScale.domain([0, d3.max<ILineDataType>(allEntries, d => d.value) as any]);
 
     // x-axis
     g.append('g')
@@ -106,7 +106,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
 
     // scatter plot generator with fancy hover effects
     g.selectAll('.dot')
-      .data(merged)
+      .data(allEntries)
       .enter()
       .append('circle')
       .attr('class', 'dot')
@@ -123,8 +123,6 @@ export default class LineChart extends React.Component<ILineChartProps> {
           .html(
             `<span>Year: ${d.date}</span><br/><span>Value: ${d.value.toFixed(3)}</span>`
           )
-          .transition()
-          .duration(30)
           .style('visibility', 'visible')
           .style('left', `${d3.event.pageX + 20}px`)
           .style('top', `${d3.event.pageY}px`);
@@ -135,8 +133,6 @@ export default class LineChart extends React.Component<ILineChartProps> {
           .duration(30)
           .attr('r', 3);
         d3.select('.tooltip')
-          .transition()
-          .duration(30)
           .style('visibility', 'hidden');
       });
   };

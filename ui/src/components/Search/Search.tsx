@@ -7,15 +7,15 @@ import {connect} from 'react-redux';
 import {debounce} from 'lodash';
 import {Suggestions} from './Suggestions';
 import {IAppState} from '../../redux/appState';
-import {getEmissionData, getEmissionsPerCapita, convertPerCapitaResultsToTotal, saveCountryName} from '../../redux/modules/Results/resultsActions';
+import {getEmissionData, convertData, saveCountryName} from '../../redux/modules/Results/resultsActions';
+import {EMISSIONS_ENDPOINT, PER_CAPITA_ENDPOINT} from '../../rest/restUtils';
 
 interface ISearchProps {
   suggestions: string[];
   suggestCountries: (searchTerm: string) => void;
   saveCountryName: (searchTerm: string) => void;
-  getEmissionDataForCountry: (country: string) => void;
-  getEmissionsPerCapita: (countries: string[]) => void;
-  convertFromPerCapitaToTotal: (countries: string[]) => void;
+  getEmissionData: (endpoint: string, country: string) => void;
+  convertData: (endpoint: string, countries: string[]) => void;
   searchedCountries: string[];
 }
 
@@ -33,9 +33,8 @@ const mapStateToProps = (state: IAppState) => ({
 const mapDispatchToProps = dispatch => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
   saveCountryName: (searchTerm: string) => dispatch(saveCountryName(searchTerm)),
-  getEmissionDataForCountry: (country: string) => dispatch(getEmissionData(country)),
-  getEmissionsPerCapita: (countries: string[]) => dispatch(getEmissionsPerCapita(countries)),
-  convertFromPerCapitaToTotal: (countries: string[]) => dispatch(convertPerCapitaResultsToTotal(countries))
+  getEmissionData: (endpoint: string, country: string) => dispatch(getEmissionData(endpoint, country)),
+  convertData: (endpoint: string, countries: string[]) => dispatch(convertData(endpoint, countries))
 });
 
 export class Search extends React.Component<ISearchProps, ISearchState> {
@@ -82,9 +81,9 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
   private onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({checkboxChecked: !this.state.checkboxChecked}, () => {
       if (this.state.checkboxChecked) {
-        this.props.getEmissionsPerCapita(this.props.searchedCountries);
+        this.props.convertData(PER_CAPITA_ENDPOINT, this.props.searchedCountries);
       } else {
-        this.props.convertFromPerCapitaToTotal(this.props.searchedCountries);
+        this.props.convertData(EMISSIONS_ENDPOINT, this.props.searchedCountries);
       }
     });
   };
@@ -93,7 +92,11 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
     const {value, checkboxChecked} = this.state;
     this.setState({suggestionsVisible: false});
     this.props.saveCountryName(value);
-    this.props.getEmissionDataForCountry(value);
+    if (checkboxChecked) {
+      this.props.getEmissionData(PER_CAPITA_ENDPOINT, value);
+    } else {
+      this.props.getEmissionData(EMISSIONS_ENDPOINT, value);
+    }
   }
 
   private renderCheckbox = () => {

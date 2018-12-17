@@ -9,18 +9,14 @@ import {clearCountryFromChart} from '../../redux/modules/Results/resultsActions'
 interface IResultsProps {
   isLoading: boolean;
   emissionData: any;
-  perCapitaData: any;
   searchedCountries: string[];
-  isPerCapita: boolean;
   clearCountryFromChart: (country: string) => void;
 }
 
 const mapStateToProps = (state: IAppState) => ({
   isLoading: state.results.loading,
-  emissionData: state.results.totalEmissionsForCountries,
-  perCapitaData: state.results.emissionsPerCapita,
+  emissionData: state.results.emissionData,
   searchedCountries: state.results.searchedCountries,
-  isPerCapita: state.results.isPerCapita
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -38,17 +34,14 @@ class Results extends React.Component<IResultsProps, any> {
 
   private renderResultsContent = () => {
     const {
-      isPerCapita,
-      perCapitaData,
       emissionData,
       searchedCountries,
       isLoading
     } = this.props;
-    const dataForChart = isPerCapita ? perCapitaData : emissionData;
     return searchedCountries.length && !isLoading ? (
       <div className='results'>
         <ResultsHeader countries={searchedCountries} onClick={country => this.onClearCountryClick(country)}/>
-        <LineChart data={dataForChart} />
+        <LineChart data={emissionData} />
       </div>
     ) : null;
   };

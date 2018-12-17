@@ -8,12 +8,15 @@
     display: flex;
 
     .searched-country {
-      margin-right: 30px;
+      margin-right: 20px;
       border: 1px solid $border-gray;
       padding: 5px;
       display: flex;
       justify-content: space-between;
       box-shadow: 1px 1px 0 0 $border-gray;
+      &:hover {
+        background: darken($white, 2%);
+      }
 
       .clear-country-button {
         cursor: pointer;

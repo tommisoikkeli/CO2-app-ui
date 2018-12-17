@@ -1,21 +1,27 @@
 import {ResultsActionTypes} from './resultsActions';
 import {isNull} from 'util';
-import {includes} from 'lodash';
 
 export interface IResultsReduxState {
   searchedCountries: string[];
-  totalEmissionsForCountries: any;
-  emissionsPerCapita: any;
+  emissionData: IEmissionData[];
   loading: boolean;
-  isPerCapita: boolean;
+}
+
+interface IEmissionData {
+  country: string;
+  indicator: string;
+  entries: IDataEntry[];
+}
+
+interface IDataEntry {
+  date: string;
+  value: number;
 }
 
 const initialState: IResultsReduxState = {
   searchedCountries: [],
-  totalEmissionsForCountries: [],
-  emissionsPerCapita: [],
-  loading: false,
-  isPerCapita: false
+  emissionData: [],
+  loading: false
 };
 
 export const resultsReducer = (state = initialState, action) => {
@@ -31,29 +37,17 @@ export const resultsReducer = (state = initialState, action) => {
         ...state,
         loading: true
       };
-    case ResultsActionTypes.FETCH_TOTAL_DATA_SUCCESS:
+    case ResultsActionTypes.FETCH_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
-        totalEmissionsForCountries: [
-          ...state.totalEmissionsForCountries,
-          reduceResponse(action.payload[1])
-        ]
+        emissionData: [...state.emissionData, reduceResponse(action.payload[1])]
       };
-    case ResultsActionTypes.FETCH_PC_DATA_SUCCESS:
+    case ResultsActionTypes.CONVERT_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
-        emissionsPerCapita: action.payload.map(data => reduceResponse(data[1])),
-        isPerCapita: true
-      };
-    case ResultsActionTypes.CONVERT_FROM_PC_TO_TOTAL_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        totalEmissionsForCountries: action.payload.map(data =>
-          reduceResponse(data[1])
-        ),
+        emissionData: action.payload.map(data => reduceResponse(data[1])),
         isPerCapita: false
       };
     case ResultsActionTypes.FETCH_DATA_FAILURE:
@@ -68,10 +62,7 @@ export const resultsReducer = (state = initialState, action) => {
         searchedCountries: state.searchedCountries.filter(
           country => country !== action.payload
         ),
-        totalEmissionsForCountries: state.totalEmissionsForCountries.filter(
-          entry => entry.country !== action.payload
-        ),
-        emissionsPerCapita: state.emissionsPerCapita.filter(
+        emissionData: state.emissionData.filter(
           entry => entry.country !== action.payload
         )
       };

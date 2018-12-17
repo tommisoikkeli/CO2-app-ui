@@ -1,17 +1,12 @@
 import {createAction} from '../../actionHelper';
-import {
-  fetchDataFromUrl,
-  EMISSIONS_ENDPOINT,
-  PER_CAPITA_ENDPOINT
-} from '../../../rest/restUtils';
+import {fetchDataFromUrl} from '../../../rest/restUtils';
 
 export enum ResultsActionTypes {
   SAVE_COUNTRY_NAME = 'results/SAVE_COUNTRY_NAME',
   FETCH_DATA_EXECUTING = 'results/FETCH_DATA_EXECUTING',
-  FETCH_TOTAL_DATA_SUCCESS = 'results/FETCH_TOTAL_DATA_SUCCESS',
-  FETCH_PC_DATA_SUCCESS = 'results/FETCH_PC_DATA_SUCCESS',
+  FETCH_DATA_SUCCESS = 'results/FETCH_DATA_SUCCESS',
   FETCH_DATA_FAILURE = 'results/FETCH_DATA_FAILURE',
-  CONVERT_FROM_PC_TO_TOTAL_SUCCESS = 'results/CONVERT_FROM_PC_TO_TOTAL_SUCCESS',
+  CONVERT_DATA_SUCCESS = 'results/CONVERT_DATA_SUCCESS',
   CLEAR_COUNTRY_FROM_CHART = 'results/CLEAR_COUNTRY_FROM_CHART'
 }
 
@@ -21,14 +16,11 @@ export const saveCountryName = (country: string) =>
 export const fetchDataExecuting = () =>
   createAction(ResultsActionTypes.FETCH_DATA_EXECUTING);
 
-export const fetchEmissionDataSuccess = data =>
-  createAction(ResultsActionTypes.FETCH_TOTAL_DATA_SUCCESS, data);
+export const fetchDataSuccess = data =>
+  createAction(ResultsActionTypes.FETCH_DATA_SUCCESS, data);
 
-export const fetchPerCapitaDataSuccess = data =>
-  createAction(ResultsActionTypes.FETCH_PC_DATA_SUCCESS, data);
-
-export const convertFromPerCapitaToTotalSuccess = data =>
-  createAction(ResultsActionTypes.CONVERT_FROM_PC_TO_TOTAL_SUCCESS, data);
+export const convertDataSuccess = data =>
+  createAction(ResultsActionTypes.CONVERT_DATA_SUCCESS, data);
 
 export const fetchDataFailure = () =>
   createAction(ResultsActionTypes.FETCH_DATA_FAILURE);
@@ -36,35 +28,23 @@ export const fetchDataFailure = () =>
 export const clearCountryFromChart = (country: string) =>
   createAction(ResultsActionTypes.CLEAR_COUNTRY_FROM_CHART, country);
 
-export const getEmissionData = (country: string) => {
+export const getEmissionData = (endpoint: string, country: string) => {
   return dispatch => {
     dispatch(fetchDataExecuting());
-    return fetchDataFromUrl(EMISSIONS_ENDPOINT, country).then(emissions =>
-      dispatch(fetchEmissionDataSuccess(emissions))
+    return fetchDataFromUrl(endpoint, country).then(emissions =>
+      dispatch(fetchDataSuccess(emissions))
     );
   };
 };
 
-export const getEmissionsPerCapita = (countries: string[]) => {
+export const convertData = (endpoint: string, countries: string[]) => {
   const requests = countries.map(country =>
-    fetchDataFromUrl(PER_CAPITA_ENDPOINT, country)
+    fetchDataFromUrl(endpoint, country)
   );
   return dispatch => {
     dispatch(fetchDataExecuting());
     return Promise.all(requests).then(emissions =>
-      dispatch(fetchPerCapitaDataSuccess(emissions))
-    );
-  };
-};
-
-export const convertPerCapitaResultsToTotal = (countries: string[]) => {
-  const requests = countries.map(country =>
-    fetchDataFromUrl(EMISSIONS_ENDPOINT, country)
-  );
-  return dispatch => {
-    dispatch(fetchDataExecuting());
-    return Promise.all(requests).then(emissions =>
-      dispatch(convertFromPerCapitaToTotalSuccess(emissions))
+      dispatch(convertDataSuccess(emissions))
     );
   };
 };
