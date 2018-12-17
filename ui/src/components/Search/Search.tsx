@@ -88,7 +88,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
     });
   };
 
-  private getDataFromSearchClick = () => {
+  private getDataFromSearchClick = (): void => {
     const {value, checkboxChecked} = this.state;
     this.setState({suggestionsVisible: false});
     this.props.saveCountryName(value);
@@ -99,7 +99,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
     }
   }
 
-  private renderCheckbox = () => {
+  private renderCheckbox = (): JSX.Element | null => {
     return this.props.searchedCountries.length ? (
       <div className='checkbox-wrapper'>
         <Checkbox

@@ -29,7 +29,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
     this.drawChart(this.props.data);
   }
 
-  private drawChart = (data: IData[]) => {
+  private drawChart = (data: IData[]): void => {
     // all entries in one array, used in scatter plot generation
     const allEntries: ILineDataType[] = d3.merge(data.map(d => d.entries));
     const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
