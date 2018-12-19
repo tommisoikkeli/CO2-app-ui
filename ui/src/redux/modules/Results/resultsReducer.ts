@@ -7,7 +7,7 @@ export interface IResultsReduxState {
   loading: boolean;
 }
 
-interface IEmissionData {
+export interface IEmissionData {
   country: string;
   indicator: string;
   entries: IDataEntry[];
@@ -47,8 +47,7 @@ export const resultsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        emissionData: action.payload.map(data => reduceResponse(data[1])),
-        isPerCapita: false
+        emissionData: action.payload.map(data => reduceResponse(data[1]))
       };
     case ResultsActionTypes.FETCH_DATA_FAILURE:
       return {

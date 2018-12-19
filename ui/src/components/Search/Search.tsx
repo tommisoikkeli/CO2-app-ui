@@ -10,14 +10,19 @@ import {IAppState} from '../../redux/appState';
 import {getEmissionData, convertData, saveCountryName} from '../../redux/modules/Results/resultsActions';
 import {EMISSIONS_ENDPOINT, PER_CAPITA_ENDPOINT} from '../../rest/restUtils';
 
-interface ISearchProps {
+interface IStateProps {
   suggestions: string[];
-  suggestCountries: (searchTerm: string) => void;
-  saveCountryName: (searchTerm: string) => void;
-  getEmissionData: (endpoint: string, country: string) => void;
-  convertData: (endpoint: string, countries: string[]) => void;
   searchedCountries: string[];
 }
+
+interface IDispatchProps {
+  suggestCountries: (searchTerm: string) => void;
+  saveCountryName: (searchTerm: string) => void;
+  getEmissionData: (endpoint: string, country: string) => Promise<void>;
+  convertData: (endpoint: string, countries: string[]) => Promise<void>;
+}
+
+type ISearchProps = IStateProps & IDispatchProps;
 
 interface ISearchState {
   value: string;
@@ -25,12 +30,12 @@ interface ISearchState {
   checkboxChecked: boolean;
 }
 
-const mapStateToProps = (state: IAppState) => ({
+const mapStateToProps = (state: IAppState): IStateProps => ({
   suggestions: state.search.filteredCountries,
   searchedCountries: state.results.searchedCountries
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch): IDispatchProps => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
   saveCountryName: (searchTerm: string) => dispatch(saveCountryName(searchTerm)),
   getEmissionData: (endpoint: string, country: string) => dispatch(getEmissionData(endpoint, country)),

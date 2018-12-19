@@ -5,21 +5,28 @@ import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
 import {ResultsHeader} from './ResultsHeader';
 import {clearCountryFromChart} from '../../redux/modules/Results/resultsActions';
+import {IEmissionData} from '../../redux/modules/Results/resultsReducer';
+import { Dispatch } from 'redux';
 
-interface IResultsProps {
+interface IStateProps {
   isLoading: boolean;
-  emissionData: any;
+  emissionData: IEmissionData[];
   searchedCountries: string[];
+}
+
+interface IDispatchProps {
   clearCountryFromChart: (country: string) => void;
 }
 
-const mapStateToProps = (state: IAppState) => ({
+type IResultsProps = IStateProps & IDispatchProps;
+
+const mapStateToProps = (state: IAppState): IStateProps => ({
   isLoading: state.results.loading,
   emissionData: state.results.emissionData,
   searchedCountries: state.results.searchedCountries,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch): IDispatchProps => ({
   clearCountryFromChart: (country: string) => dispatch(clearCountryFromChart(country))
 });
 

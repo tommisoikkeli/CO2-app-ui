@@ -8,7 +8,7 @@ interface IResultsHeaderProps {
 export const ResultsHeader: React.SFC<IResultsHeaderProps> = ({
   countries,
   onClick
-}): JSX.Element => {
+}) => {
   const mapCountries = (): JSX.Element[] =>
     countries.map((country: string) => (
       <div className='searched-country' key={`country-${country}`}>
