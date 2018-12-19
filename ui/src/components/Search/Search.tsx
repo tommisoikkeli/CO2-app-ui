@@ -18,8 +18,8 @@ interface IStateProps {
 interface IDispatchProps {
   suggestCountries: (searchTerm: string) => void;
   saveCountryName: (searchTerm: string) => void;
-  getEmissionData: (endpoint: string, country: string) => Promise<void>;
-  convertData: (endpoint: string, countries: string[]) => Promise<void>;
+  getEmissionData: (endpoint: string, country: string) => Promise<any>;
+  convertData: (endpoint: string, countries: string[]) => Promise<any>;
 }
 
 type ISearchProps = IStateProps & IDispatchProps;
@@ -35,7 +35,7 @@ const mapStateToProps = (state: IAppState): IStateProps => ({
   searchedCountries: state.results.searchedCountries
 });
 
-const mapDispatchToProps = (dispatch): IDispatchProps => ({
+const mapDispatchToProps = (dispatch: any): IDispatchProps => ({
   suggestCountries: (searchTerm: string) => dispatch(filterCountries(searchTerm)),
   saveCountryName: (searchTerm: string) => dispatch(saveCountryName(searchTerm)),
   getEmissionData: (endpoint: string, country: string) => dispatch(getEmissionData(endpoint, country)),

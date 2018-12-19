@@ -28,7 +28,7 @@ export const fetchDataFailure = () =>
 export const clearCountryFromChart = (country: string) =>
   createAction(ResultsActionTypes.CLEAR_COUNTRY_FROM_CHART, country);
 
-export const getEmissionData = (endpoint: string, country: string) => {
+export const getEmissionData = async (endpoint: string, country: string): Promise<any> => {
   return dispatch => {
     dispatch(fetchDataExecuting());
     return fetchDataFromUrl(endpoint, country).then(emissions =>
@@ -37,7 +37,7 @@ export const getEmissionData = (endpoint: string, country: string) => {
   };
 };
 
-export const convertData = (endpoint: string, countries: string[]) => {
+export const convertData = async (endpoint: string, countries: string[]): Promise<any> => {
   const requests = countries.map(country =>
     fetchDataFromUrl(endpoint, country)
   );
