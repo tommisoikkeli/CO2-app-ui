@@ -47,8 +47,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const height = svgHeight - margins.top - margins.bottom;
     const svg = d3
       .select('#data-chart')
-      .attr('width', svgWidth)
-      .attr('height', svgHeight);
+      .attr('width', '100%')
+      .attr('height', '100%')
     const g = svg
       .append('g')
       .attr('transform', `translate(${margins.left}, ${margins.top})`);

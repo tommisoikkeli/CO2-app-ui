@@ -22,29 +22,31 @@ export const fetchDataSuccess = data =>
 export const convertDataSuccess = data =>
   createAction(ResultsActionTypes.CONVERT_DATA_SUCCESS, data);
 
-export const fetchDataFailure = () =>
-  createAction(ResultsActionTypes.FETCH_DATA_FAILURE);
+export const fetchDataFailure = error =>
+  createAction(ResultsActionTypes.FETCH_DATA_FAILURE, error);
 
 export const clearCountryFromChart = (country: string) =>
   createAction(ResultsActionTypes.CLEAR_COUNTRY_FROM_CHART, country);
 
-export const getEmissionData = async (endpoint: string, country: string): Promise<any> => {
-  return dispatch => {
+export const getEmissionData = (endpoint: string, country: string) => {
+  return async (dispatch: any): Promise<any> => {
     dispatch(fetchDataExecuting());
-    return fetchDataFromUrl(endpoint, country).then(emissions =>
-      dispatch(fetchDataSuccess(emissions))
-    );
+    console.log('ASYNC DISPATCH YUHUUUUUU');
+    return fetchDataFromUrl(endpoint, country)
+      .then(emissions => dispatch(fetchDataSuccess(emissions)))
+      .catch(e => dispatch(fetchDataFailure(e)));
   };
 };
 
-export const convertData = async (endpoint: string, countries: string[]): Promise<any> => {
+export const convertData = (endpoint: string, countries: string[]) => {
   const requests = countries.map(country =>
     fetchDataFromUrl(endpoint, country)
   );
-  return dispatch => {
+  return async (dispatch: any): Promise<any> => {
+    console.log('ASYNC DISPATCH IN CONVERT TROPUHUUUUUU', requests);
     dispatch(fetchDataExecuting());
-    return Promise.all(requests).then(emissions =>
-      dispatch(convertDataSuccess(emissions))
-    );
+    return Promise.all(requests)
+      .then(emissions => dispatch(convertDataSuccess(emissions)))
+      .catch(e => dispatch(fetchDataFailure(e)));
   };
 };
