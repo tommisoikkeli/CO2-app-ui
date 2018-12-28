@@ -9,6 +9,9 @@ import {Suggestions} from './Suggestions';
 import {IAppState} from '../../redux/appState';
 import {getEmissionData, convertData, saveCountryName} from '../../redux/modules/Results/resultsActions';
 import {EMISSIONS_ENDPOINT, PER_CAPITA_ENDPOINT} from '../../rest/restUtils';
+import {ErrorModal} from '../ErrorModal/ErrorModal';
+
+const MAX_COUNTRIES_IN_CHART = 5;
 
 interface IStateProps {
   suggestions: string[];
@@ -28,6 +31,7 @@ interface ISearchState {
   value: string;
   suggestionsVisible: boolean;
   checkboxChecked: boolean;
+  errorModalVisible: boolean;
 }
 
 const mapStateToProps = (state: IAppState): IStateProps => ({
@@ -43,14 +47,12 @@ const mapDispatchToProps = (dispatch: any): IDispatchProps => ({
 });
 
 export class Search extends React.Component<ISearchProps, ISearchState> {
-  public constructor(props: ISearchProps) {
-    super(props);
-    this.state = {
-      value: '',
-      suggestionsVisible: false,
-      checkboxChecked: false
-    };
-  }
+  public state = {
+    value: '',
+    suggestionsVisible: false,
+    checkboxChecked: false,
+    errorModalVisible: false
+  };
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     this.setState({value: event.target.value});
@@ -93,7 +95,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
     });
   };
 
-  private getDataFromSearchClick = (): void => {
+  private getDataFromSearch = (): void => {
     const {value, checkboxChecked} = this.state;
     this.setState({suggestionsVisible: false});
     this.props.saveCountryName(value);
@@ -101,6 +103,23 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
       this.props.getEmissionData(PER_CAPITA_ENDPOINT, value);
     } else {
       this.props.getEmissionData(EMISSIONS_ENDPOINT, value);
+    }
+  }
+
+  private isLineChartOverLimit = () => this.props.searchedCountries.length >= MAX_COUNTRIES_IN_CHART;
+
+  private renderErrorModal = (): JSX.Element => (
+    <ErrorModal
+      content='Too many entries! Delete a country from the chart in order to add a new one.'
+      isOpen={this.state.errorModalVisible}
+      onCloseClick={() => this.setState({errorModalVisible: false})}/>
+  );
+
+  private onSearchClick = (): JSX.Element | void => {
+    if (this.isLineChartOverLimit()) {
+      this.setState({errorModalVisible: true});
+    } else {
+      this.getDataFromSearch();
     }
   }
 
@@ -136,12 +155,13 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
           <Button
             text='Search'
             type={ButtonType.DEFAULT}
-            onClick={this.getDataFromSearchClick}
+            onClick={this.onSearchClick}
             className='search-button'
             disabled={!this.isSearchLengthOverOne()}
           />
         </div>
         {this.renderCheckbox()}
+        {this.renderErrorModal()}
       </div>
     );
   }

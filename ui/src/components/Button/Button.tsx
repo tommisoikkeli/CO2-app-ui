@@ -9,7 +9,8 @@ interface IButtonProps {
 }
 
 export enum ButtonType {
-  DEFAULT = 'default'
+  DEFAULT = 'default',
+  ERROR = 'error'
 }
 
 export const Button: React.SFC<IButtonProps> = ({

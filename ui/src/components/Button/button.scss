@@ -15,6 +15,11 @@
     }
   }
 
+  &.error {
+    background: $error-red;
+    width: 100%;
+  }
+
   &:disabled {
     background: $border-gray;
     cursor: not-allowed;

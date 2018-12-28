@@ -31,7 +31,6 @@ export const clearCountryFromChart = (country: string) =>
 export const getEmissionData = (endpoint: string, country: string) => {
   return async (dispatch: any): Promise<any> => {
     dispatch(fetchDataExecuting());
-    console.log('ASYNC DISPATCH YUHUUUUUU');
     return fetchDataFromUrl(endpoint, country)
       .then(emissions => dispatch(fetchDataSuccess(emissions)))
       .catch(e => dispatch(fetchDataFailure(e)));
@@ -43,7 +42,6 @@ export const convertData = (endpoint: string, countries: string[]) => {
     fetchDataFromUrl(endpoint, country)
   );
   return async (dispatch: any): Promise<any> => {
-    console.log('ASYNC DISPATCH IN CONVERT TROPUHUUUUUU', requests);
     dispatch(fetchDataExecuting());
     return Promise.all(requests)
       .then(emissions => dispatch(convertDataSuccess(emissions)))

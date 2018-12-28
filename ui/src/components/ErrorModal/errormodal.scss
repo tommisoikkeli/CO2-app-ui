@@ -1,0 +1,27 @@
+.Modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid $red;
+  background: $white;
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: auto;
+
+  > button {
+    margin-top: 60px;
+  }
+}
+
+.Overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+}
