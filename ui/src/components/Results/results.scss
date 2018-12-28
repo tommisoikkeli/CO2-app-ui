@@ -13,7 +13,7 @@
       padding: 5px;
       display: flex;
       justify-content: space-between;
-      box-shadow: 1px 1px 0 0 $border-gray;
+      box-shadow: 0 1px 1px 0 $border-gray;
       &:hover {
         background: darken($white, 2%);
       }

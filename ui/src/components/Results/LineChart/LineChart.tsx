@@ -45,6 +45,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
     };
     const width = svgWidth - margins.left - margins.right;
     const height = svgHeight - margins.top - margins.bottom;
+
+    // the main svg element
     const svg = d3
       .select('#data-chart')
       .attr('width', '100%')
@@ -113,8 +115,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('r', 3)
       .attr('cx', (d: ILineDataType) => xScale(d.date))
       .attr('cy', (d: ILineDataType) => yScale(d.value))
-      .on('mouseover', function(d: ILineDataType) {
-        // can't use arrow function here because of the need for "this"
+      .on('mouseover', function(d: ILineDataType) { // <- can't use arrow function here because of the need for "this"
         d3.select(this)
           .transition()
           .duration(30)

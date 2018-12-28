@@ -18,6 +18,9 @@
   &.error {
     background: $error-red;
     width: 100%;
+    &:hover {
+      background: lighten($error-red, 5%);
+    }
   }
 
   &:disabled {

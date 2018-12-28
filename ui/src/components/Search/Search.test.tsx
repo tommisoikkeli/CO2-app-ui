@@ -7,7 +7,8 @@ const props = {
   searchedCountries: [],
   suggestCountries: jest.fn(),
   saveCountryName: jest.fn(),
-  getEmissionDataForCountry: jest.fn()
+  getEmissionData: jest.fn(),
+  convertData: jest.fn()
 };
 
 describe('Search', () => {

@@ -8,7 +8,7 @@ interface IModalProps {
   onCloseClick: () => void;
 }
 
-Modal.setAppElement('#root');
+Modal.setAppElement('body');
 
 export const ErrorModal: React.SFC<IModalProps> = ({
   content,
