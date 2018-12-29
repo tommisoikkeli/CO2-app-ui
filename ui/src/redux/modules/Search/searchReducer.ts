@@ -1,13 +1,13 @@
 import {SearchActionTypes} from './searchActions';
-import {countries} from '../../../data/countries';
-import {includes, isEmpty} from 'lodash';
+import {isEmpty} from 'lodash';
+import {getSuggestedCountries} from './searchUtils';
 
 export interface ISearchReduxState {
   filteredCountries: string[];
 }
 
 const initialState: ISearchReduxState = {
-  filteredCountries: [],
+  filteredCountries: []
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -24,8 +24,3 @@ export const searchReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-const getSuggestedCountries = (searchTerm: string) =>
-  countries.filter(country =>
-    includes(country.toLowerCase(), searchTerm.toLowerCase())
-  );
