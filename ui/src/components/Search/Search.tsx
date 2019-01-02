@@ -106,7 +106,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
     }
   }
 
-  private isLineChartOverLimit = () => this.props.searchedCountries.length >= MAX_COUNTRIES_IN_CHART;
+  private isLineChartOnLimit = () => this.props.searchedCountries.length === MAX_COUNTRIES_IN_CHART;
 
   private renderErrorModal = (): JSX.Element => (
     <ErrorModal
@@ -116,7 +116,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
   );
 
   private onSearchClick = (): JSX.Element | void => {
-    if (this.isLineChartOverLimit()) {
+    if (this.isLineChartOnLimit()) {
       this.setState({errorModalVisible: true});
     } else {
       this.getDataFromSearch();

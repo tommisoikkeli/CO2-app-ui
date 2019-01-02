@@ -24,9 +24,10 @@ export const reduceResponse = data => {
 export const filterSearchedCountries = (countryFromAction: string, searchedCountries: string[]) => {
   return searchedCountries.filter(c => {
     if (compareLengths(c, countryFromAction)) {
-      return !includes(c, countryFromAction);
+      return !includes(c.toLowerCase(), countryFromAction.toLowerCase());
     } else {
-      return !includes(countryFromAction, c);
+      console.log(countryFromAction, c)
+      return !includes(countryFromAction.toLowerCase(), c.toLowerCase());
     }
   });
 };
