@@ -26,7 +26,6 @@ export const filterSearchedCountries = (countryFromAction: string, searchedCount
     if (compareLengths(c, countryFromAction)) {
       return !includes(c.toLowerCase(), countryFromAction.toLowerCase());
     } else {
-      console.log(countryFromAction, c)
       return !includes(countryFromAction.toLowerCase(), c.toLowerCase());
     }
   });
