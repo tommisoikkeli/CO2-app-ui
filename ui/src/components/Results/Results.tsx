@@ -4,17 +4,19 @@ import {connect} from 'react-redux';
 import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
 import {ResultsHeader} from './ResultsHeader';
-import {clearCountryFromChart} from '../../redux/modules/Results/resultsActions';
+import {clearCountryFromChart, confirmError} from '../../redux/modules/Results/resultsActions';
 import {IEmissionData} from '../../redux/modules/Results/resultsReducer';
+import {ErrorModal} from '../ErrorModal/ErrorModal';
 
 interface IStateProps {
   isLoading: boolean;
   emissionData: IEmissionData[];
-  searchedCountries: string[];
+  hasErrored: boolean;
 }
 
 interface IDispatchProps {
   clearCountryFromChart: (country: string) => void;
+  confirmError: () => void;
 }
 
 type IResultsProps = IStateProps & IDispatchProps;
@@ -22,35 +24,45 @@ type IResultsProps = IStateProps & IDispatchProps;
 const mapStateToProps = (state: IAppState): IStateProps => ({
   isLoading: state.results.loading,
   emissionData: state.results.emissionData,
-  searchedCountries: state.results.searchedCountries,
+  hasErrored: state.results.hasErrored
 });
 
 const mapDispatchToProps = (dispatch: any): IDispatchProps => ({
-  clearCountryFromChart: (country: string) => dispatch(clearCountryFromChart(country))
+  clearCountryFromChart: (country: string) => dispatch(clearCountryFromChart(country)),
+  confirmError: () => dispatch(confirmError())
 });
 
-class Results extends React.Component<IResultsProps, any> {
-  private renderLoadingSpinner = () => {
+class Results extends React.Component<IResultsProps> {
+  private renderLoadingSpinner = (): JSX.Element | null => {
     return this.props.isLoading ? <Loading /> : null;
   };
 
-  private onClearCountryClick = (country: string) => {
+  private onClearCountryClick = (country: string): void => {
     this.props.clearCountryFromChart(country);
   }
 
-  private renderResultsContent = () => {
+  private renderResultsContent = (): JSX.Element | null => {
     const {
       emissionData,
-      searchedCountries,
-      isLoading
+      isLoading,
+      hasErrored
     } = this.props;
-    return searchedCountries.length && !isLoading ? (
+    return emissionData.length && !isLoading && !hasErrored ? (
       <div className='results'>
-        <ResultsHeader countries={searchedCountries} onClick={country => this.onClearCountryClick(country)}/>
+        <ResultsHeader
+          countries={emissionData.map(country => country.country)}
+          onClick={country => this.onClearCountryClick(country)}/>
         <LineChart data={emissionData} />
       </div>
     ) : null;
   };
+
+  private renderErrorModal = (): JSX.Element => (
+    <ErrorModal
+      content='No data found for searched country!'
+      isOpen={this.props.hasErrored}
+      onCloseClick={() => this.props.confirmError()}/>
+  );
 
   public render() {
     return (
@@ -58,6 +70,7 @@ class Results extends React.Component<IResultsProps, any> {
         {this.renderLoadingSpinner()}
         <div className='results-content-container'>
           {this.renderResultsContent()}
+          {this.renderErrorModal()}
         </div>
       </div>
     );
