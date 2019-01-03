@@ -1,6 +1,7 @@
 import {createAction} from '../../actionHelper';
 import {fetchDataFromUrl} from '../../../rest/restUtils';
 import {isNil, upperFirst} from 'lodash';
+import { IEmissionData } from '../../../models/results';
 
 export enum ResultsActionTypes {
   SAVE_COUNTRY_NAME = 'results/SAVE_COUNTRY_NAME',

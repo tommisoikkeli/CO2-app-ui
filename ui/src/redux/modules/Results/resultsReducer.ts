@@ -1,24 +1,7 @@
 import {ResultsActionTypes} from './resultsActions';
 import {reduceResponse, filterSearchedCountries} from './resultsUtils';
 import {without} from 'lodash';
-
-export interface IResultsReduxState {
-  searchedCountries: string[];
-  emissionData: IEmissionData[];
-  loading: boolean;
-  hasErrored: boolean;
-}
-
-export interface IEmissionData {
-  country: string;
-  indicator: string;
-  entries: IDataEntry[];
-}
-
-interface IDataEntry {
-  date: string;
-  value: number;
-}
+import {IResultsReduxState} from '../../../models/results';
 
 const initialState: IResultsReduxState = {
   searchedCountries: [],

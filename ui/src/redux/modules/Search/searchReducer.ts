@@ -1,10 +1,7 @@
 import {SearchActionTypes} from './searchActions';
 import {isEmpty} from 'lodash';
 import {getSuggestedCountries} from './searchUtils';
-
-export interface ISearchReduxState {
-  filteredCountries: string[];
-}
+import {ISearchReduxState} from '../../../models/search';
 
 const initialState: ISearchReduxState = {
   filteredCountries: []

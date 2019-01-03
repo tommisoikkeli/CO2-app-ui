@@ -5,8 +5,8 @@ import {Loading} from './Loading';
 import LineChart from './LineChart/LineChart';
 import {ResultsHeader} from './ResultsHeader';
 import {clearCountryFromChart, confirmError} from '../../redux/modules/Results/resultsActions';
-import {IEmissionData} from '../../redux/modules/Results/resultsReducer';
 import {ErrorModal} from '../ErrorModal/ErrorModal';
+import {IEmissionData} from '../../models/results';
 
 interface IStateProps {
   isLoading: boolean;

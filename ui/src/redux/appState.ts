@@ -1,5 +1,5 @@
-import {ISearchReduxState} from './modules/Search/searchReducer';
-import {IResultsReduxState} from './modules/Results/resultsReducer';
+import {ISearchReduxState} from '../models/search';
+import {IResultsReduxState} from '../models/results';
 
 export interface IAppState {
   search: ISearchReduxState;

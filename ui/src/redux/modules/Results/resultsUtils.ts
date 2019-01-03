@@ -1,10 +1,11 @@
 import {isNull, includes} from 'lodash';
+import {IEmissionData, IEmissionDataResponseEntry, IDataEntry} from '../../../models/results';
 
 // The response from the API is full of stuff the line chart doesn't need
 // This function returns only the needed values
-export const reduceResponse = data => {
+export const reduceResponse = (data: IEmissionDataResponseEntry[]): IEmissionData => {
   const filteredData = data.filter(item => !isNull(item.value));
-  const reduced = filteredData.reduce((acc, item) => {
+  const reduced = filteredData.reduce((acc: IDataEntry[], item: IEmissionDataResponseEntry) => {
     return [...acc, {date: item.date, value: item.value}];
   }, []);
   return {
@@ -21,7 +22,7 @@ export const reduceResponse = data => {
 // This helper function filters the searched countries after deleting based on the requested name (from Redux action).
 // For example, it compares the length of the strings "United States of America" and "United States"
 // and determines how the filter should be applied.
-export const filterSearchedCountries = (countryFromAction: string, searchedCountries: string[]) => {
+export const filterSearchedCountries = (countryFromAction: string, searchedCountries: string[]): string[] => {
   return searchedCountries.filter(c => {
     if (compareLengths(c, countryFromAction)) {
       return !includes(c.toLowerCase(), countryFromAction.toLowerCase());
@@ -31,4 +32,4 @@ export const filterSearchedCountries = (countryFromAction: string, searchedCount
   });
 };
 
-const compareLengths = (country: string, countryFromAction: string): boolean => country.length > countryFromAction.length;
+export const compareLengths = (country: string, countryFromAction: string): boolean => country.length > countryFromAction.length;
