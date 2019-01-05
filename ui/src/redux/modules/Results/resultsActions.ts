@@ -1,7 +1,7 @@
 import {createAction} from '../../actionHelper';
 import {fetchDataFromUrl} from '../../../rest/restUtils';
 import {isNil, upperFirst} from 'lodash';
-import { IEmissionData } from '../../../models/results';
+import {reduceResponse} from './resultsUtils';
 
 export enum ResultsActionTypes {
   SAVE_COUNTRY_NAME = 'results/SAVE_COUNTRY_NAME',
@@ -42,7 +42,8 @@ export const getEmissionData = (endpoint: string, country: string) => {
         if (isNil(emissionData[1])) {
           dispatch(fetchDataFailure());
         }
-        dispatch(fetchDataSuccess(emissionData));
+        const reducedData = reduceResponse(emissionData[1]);
+        dispatch(fetchDataSuccess(reducedData));
       })
       .catch(e => dispatch(fetchDataFailure()));
   };
@@ -55,7 +56,10 @@ export const convertData = (endpoint: string, countries: string[]) => {
   return async (dispatch: any): Promise<any> => {
     dispatch(fetchDataExecuting());
     return Promise.all(requests)
-      .then(emissions => dispatch(convertDataSuccess(emissions)))
+      .then(emissions => {
+        const reducedData = emissions.map(data => reduceResponse(data[1]));
+        dispatch(convertDataSuccess(reducedData))
+      })
       .catch(e => dispatch(fetchDataFailure()));
   };
 };

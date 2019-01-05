@@ -1,5 +1,5 @@
 import {ResultsActionTypes} from './resultsActions';
-import {reduceResponse, filterSearchedCountries} from './resultsUtils';
+import {filterSearchedCountries} from './resultsUtils';
 import {without} from 'lodash';
 import {IResultsReduxState} from '../../../models/results';
 
@@ -28,13 +28,13 @@ export const resultsReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         hasErrored: false,
-        emissionData: [...state.emissionData, reduceResponse(action.payload[1])]
+        emissionData: [...state.emissionData, action.payload]
       };
     case ResultsActionTypes.CONVERT_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
-        emissionData: action.payload.map(data => reduceResponse(data[1]))
+        emissionData: action.payload
       };
     case ResultsActionTypes.FETCH_DATA_FAILURE:
       return {
