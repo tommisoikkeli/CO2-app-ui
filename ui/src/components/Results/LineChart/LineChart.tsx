@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as d3 from 'd3';
+import {debounce} from 'lodash';
 
 interface ILineChartProps {
   data: IData[];
@@ -18,14 +19,35 @@ interface ILineDataType {
 }
 
 export default class LineChart extends React.Component<ILineChartProps> {
+  private desktopMargins = {
+    top: 20,
+    right: 110,
+    bottom: 30,
+    left: 80
+  };
+
+  private mobileMargins = {
+    top: 20,
+    right: 40,
+    bottom: 30,
+    left: 50
+  };
+
   public componentDidMount() {
     this.drawChart(this.props.data);
+    window.addEventListener('resize', this.resize);
+  }
+
+  public componentWillUnMount() {
+    window.removeEventListener('resize', this.resize);
   }
 
   public componentDidUpdate() {
     // called when a country is removed from the chart
     // remove all content from the svg and draw it again with the updated data
-    d3.select('svg').selectAll('*').remove();
+    d3.select('#data-chart')
+      .selectAll('*')
+      .remove();
     this.drawChart(this.props.data);
   }
 
@@ -35,14 +57,11 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
 
     // size attributes
-    const svgWidth = 800;
-    const svgHeight = 550;
-    const margins = {
-      top: 20,
-      right: 100,
-      bottom: 30,
-      left: 80
-    };
+    const margins = window.innerWidth >= 768 ? this.desktopMargins : this.mobileMargins;
+    const svgWidth = parseInt(d3.select('.results-line-chart').style('width'));
+    const svgHeight = parseInt(
+      d3.select('.results-line-chart').style('height')
+    );
     const width = svgWidth - margins.left - margins.right;
     const height = svgHeight - margins.top - margins.bottom;
 
@@ -51,12 +70,14 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .select('#data-chart')
       .attr('width', '100%')
       .attr('height', '100%')
+      .attr('viewBox', `0 0 ${svgWidth}, ${svgHeight}`)
+      .attr('preserveAspectRatio', 'xMinYMin');
     const g = svg
       .append('g')
-      .attr('transform', `translate(${margins.left}, ${margins.top})`);
+      .attr('transform', `translate(${margins.left} ${margins.top})`);
     const xScale = d3.scaleLinear().rangeRound([0, width]);
     const yScale = d3.scaleLinear().rangeRound([height, 0]);
-    
+
     // line generator
     const line = d3
       .line<ILineDataType>()
@@ -70,14 +91,14 @@ export default class LineChart extends React.Component<ILineChartProps> {
     // x-axis
     g.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .attr('class', 'axis')
+      .attr('class', 'x-axis')
       .call(d3.axisBottom(xScale).tickFormat(d3.format('d')));
 
     // y-axis
     g.append('g')
       .call(d3.axisLeft(yScale))
       .append('text')
-      .attr('class', 'axis')
+      .attr('class', 'y-axis')
       .attr('fill', '#000')
       .attr('transform', 'rotate(-90)')
       .attr('y', 6)
@@ -95,16 +116,19 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('d', (d: IData) => line(d.entries));
 
     // label at the end of line
-    g.selectAll('.line-text')
+    window.innerWidth > 768 ? g.selectAll('.line-text')
       .data(data)
       .enter()
       .append('text')
       .attr('class', 'line-text')
-      .attr('transform', (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`)
+      .attr(
+        'transform',
+        (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`
+      )
       .attr('fill', (d, i) => lineColors[i])
       .attr('x', 10)
       .attr('dy', '1em')
-      .text((d: IData) => d.country);
+      .text((d: IData) => d.country) : null;
 
     // scatter plot generator with fancy hover effects
     g.selectAll('.dot')
@@ -115,14 +139,17 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('r', 3)
       .attr('cx', (d: ILineDataType) => xScale(d.date))
       .attr('cy', (d: ILineDataType) => yScale(d.value))
-      .on('mouseover', function(d: ILineDataType) { // <- can't use arrow function here because of the need for "this"
+      .on('mouseover', function(d: ILineDataType) {
+        // <- can't use arrow function here because of the need for "this"
         d3.select(this)
           .transition()
           .duration(30)
           .attr('r', 5);
         d3.select('.tooltip')
           .html(
-            `<span>Year: ${d.date}</span><br/><span>Value: ${d.value.toFixed(3)}</span>`
+            `<span>Year: ${d.date}</span><br/><span>Value: ${d.value.toFixed(
+              3
+            )}</span>`
           )
           .style('visibility', 'visible')
           .style('left', `${d3.event.pageX + 20}px`)
@@ -133,10 +160,16 @@ export default class LineChart extends React.Component<ILineChartProps> {
           .transition()
           .duration(30)
           .attr('r', 3);
-        d3.select('.tooltip')
-          .style('visibility', 'hidden');
+        d3.select('.tooltip').style('visibility', 'hidden');
       });
   };
+
+  private resize = debounce(() => {
+    d3.select('#data-chart')
+      .select('*')
+      .remove();
+    this.drawChart(this.props.data);
+  }, 1000);
 
   public render() {
     return (

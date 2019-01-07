@@ -6,9 +6,32 @@
   background: $chart-background-color;
   margin-bottom: 25px;
 
+  @include tablet {
+    width: 720px;
+    height: 500px;
+  }
+
+  @include mobile {
+    width: 420px;
+    height: 400px;
+  }
+
+  @include mobile-small {
+    width: 350px;
+    height: 300px;
+  }
+
   svg {
+    width: 100%;
+    height: 100%;
     text {
       font-size: 12px;
+      @include mobile {
+        font-size: 8px;
+      }
+      @include mobile-small {
+        font-size: 8px;
+      }
     }
 
     .axis > path {
@@ -21,11 +44,18 @@
     }
 
     .dot {
+      display: block;
       fill: $black;
       opacity: 0.5;
       stroke-opacity: 0;
       stroke-width: 15px;
       stroke: $black;
+      @include mobile {
+        display: none;
+      }
+      @include mobile-small {
+        display: none;
+      }
     }
   }
   .tooltip {
@@ -39,7 +69,8 @@
       content: '';
       position: absolute;
       border: solid;
-      border-color: $tooltip-background-color transparent transparent transparent;
+      border-color: $tooltip-background-color transparent transparent
+        transparent;
       border-width: 8px;
       top: 5px;
       left: -8px;
