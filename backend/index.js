@@ -8,7 +8,7 @@ app.use(cors());
 const port = process.env.PORT || 8080;
 
 const PER_PAGE = 60;
-const API_BASE_URL = 'https://api.worldbank.org/v2/countries/';
+const API_BASE_URL = 'http://api.worldbank.org/v2/countries/';
 const EMISSIONS_INDICATOR_URL = `/indicators/EN.ATM.CO2E.KT?format=json&per_page=${PER_PAGE}`;
 const EMISSIONS_PER_CAPITA_INDICATOR_URL = `/indicators/EN.ATM.CO2E.PC?format=json&per_page=${PER_PAGE}`;
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as d3 from 'd3';
-import {debounce} from 'lodash';
 
 interface ILineChartProps {
   data: IData[];
@@ -45,10 +44,12 @@ export default class LineChart extends React.Component<ILineChartProps> {
   public componentDidUpdate() {
     // called when a country is removed from the chart
     // remove all content from the svg and draw it again with the updated data
-    d3.select('#data-chart')
-      .selectAll('*')
-      .remove();
+    this.deleteChartContent();
     this.drawChart(this.props.data);
+  }
+
+  private deleteChartContent = (): void => {
+    d3.select('#data-chart').select('*').remove();
   }
 
   private drawChart = (data: IData[]): void => {
@@ -116,19 +117,21 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('d', (d: IData) => line(d.entries));
 
     // label at the end of line
-    window.innerWidth > 768 ? g.selectAll('.line-text')
-      .data(data)
-      .enter()
-      .append('text')
-      .attr('class', 'line-text')
-      .attr(
-        'transform',
-        (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`
-      )
-      .attr('fill', (d, i) => lineColors[i])
-      .attr('x', 10)
-      .attr('dy', '1em')
-      .text((d: IData) => d.country) : null;
+    if (window.innerWidth >= 768) {
+      g.selectAll('.line-text')
+        .data(data)
+        .enter()
+        .append('text')
+        .attr('class', 'line-text')
+        .attr(
+          'transform',
+          (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`
+        )
+        .attr('fill', (d, i) => lineColors[i])
+        .attr('x', 10)
+        .attr('dy', '1em')
+        .text((d: IData) => d.country);
+    }
 
     // scatter plot generator with fancy hover effects
     g.selectAll('.dot')
@@ -164,12 +167,10 @@ export default class LineChart extends React.Component<ILineChartProps> {
       });
   };
 
-  private resize = debounce(() => {
-    d3.select('#data-chart')
-      .select('*')
-      .remove();
+  private resize = () => {
+    this.deleteChartContent();
     this.drawChart(this.props.data);
-  }, 1000);
+  };
 
   public render() {
     return (
