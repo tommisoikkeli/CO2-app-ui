@@ -11,7 +11,7 @@ import {getEmissionData, convertData, saveCountryName} from '../../redux/modules
 import {EMISSIONS_ENDPOINT, PER_CAPITA_ENDPOINT} from '../../rest/restUtils';
 import {ErrorModal} from '../ErrorModal/ErrorModal';
 
-const MAX_COUNTRIES_IN_CHART = 5;
+const MAX_COUNTRIES_IN_CHART = 4;
 
 interface IStateProps {
   suggestions: string[];

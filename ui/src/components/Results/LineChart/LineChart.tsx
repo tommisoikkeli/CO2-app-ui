@@ -27,7 +27,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
 
   private mobileMargins = {
     top: 20,
-    right: 40,
+    right: 30,
     bottom: 30,
     left: 50
   };
