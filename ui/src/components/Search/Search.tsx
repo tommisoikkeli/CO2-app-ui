@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch: any): IDispatchProps => ({
 });
 
 export class Search extends React.Component<ISearchProps, ISearchState> {
-  public state = {
+  public state: ISearchState = {
     value: '',
     suggestionsVisible: false,
     checkboxChecked: false,
