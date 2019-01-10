@@ -33,10 +33,6 @@ const mapDispatchToProps = (dispatch: any): IDispatchProps => ({
 });
 
 class Results extends React.Component<IResultsProps> {
-  private renderLoadingSpinner = (): JSX.Element | null => {
-    return this.props.isLoading ? <Loading /> : null;
-  };
-
   private onClearCountryClick = (country: string): void => {
     this.props.clearCountryFromChart(country);
   }
@@ -65,9 +61,10 @@ class Results extends React.Component<IResultsProps> {
   );
 
   public render() {
+    const loadingSpinner = this.props.isLoading && <Loading/>;
     return (
       <div className='results-top-container'>
-        {this.renderLoadingSpinner()}
+        {loadingSpinner}
         <div className='results-content-container'>
           {this.renderResultsContent()}
           {this.renderErrorModal()}

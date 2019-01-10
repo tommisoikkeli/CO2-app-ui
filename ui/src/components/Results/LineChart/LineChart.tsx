@@ -143,7 +143,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('cx', (d: ILineDataType) => xScale(d.date))
       .attr('cy', (d: ILineDataType) => yScale(d.value))
       .on('mouseover', function(d: ILineDataType) {
-        // <- can't use arrow function here because of the need for "this"
+        // can't use arrow function here because of the need for "this"
         d3.select(this)
           .transition()
           .duration(30)
