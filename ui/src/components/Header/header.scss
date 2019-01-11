@@ -3,7 +3,7 @@
   justify-content: center;
   background: linear-gradient(to right, darken($header-blue, 5%), lighten($header-blue, 10%));
   margin-bottom: 30px;
-  border-radius: 3px;
+  border-radius: $border-radius;
 
   h1 {
     color: $header-black;
