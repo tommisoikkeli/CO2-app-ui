@@ -74,8 +74,7 @@
       content: '';
       position: absolute;
       border: solid;
-      border-color: $tooltip-background-color transparent transparent
-        transparent;
+      border-color: $tooltip-background-color transparent transparent;
       border-width: 8px;
       top: 5px;
       left: -8px;

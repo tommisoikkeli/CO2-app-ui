@@ -20,7 +20,7 @@ interface ILineDataType {
 export default class LineChart extends React.Component<ILineChartProps> {
   private desktopMargins = {
     top: 20,
-    right: 110,
+    right: 130,
     bottom: 30,
     left: 80
   };

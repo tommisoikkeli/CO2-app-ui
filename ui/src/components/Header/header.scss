@@ -1,6 +1,15 @@
 .header {
   display: flex;
   justify-content: center;
-  background-color: $header-blue;
+  background: linear-gradient(to right, darken($header-blue, 5%), lighten($header-blue, 10%));
   margin-bottom: 30px;
+  border-radius: 3px;
+
+  h1 {
+    color: $header-black;
+    font-size: 22px;
+    @include desktop {
+      font-size: 32px;
+    }
+  }
 }
