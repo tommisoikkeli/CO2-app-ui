@@ -35,7 +35,7 @@ export const confirmError = () =>
   createAction(ResultsActionTypes.CONFIRM_ERROR);
 
 export const getEmissionData = (endpoint: string, country: string) => {
-  return async (dispatch: any): Promise<any> => {
+  return async (dispatch: any): Promise<void> => {
     dispatch(fetchDataExecuting());
     return fetchDataFromUrl(endpoint, country)
       .then(emissionData => {
@@ -53,7 +53,7 @@ export const convertData = (endpoint: string, countries: string[]) => {
   const requests = countries.map(country =>
     fetchDataFromUrl(endpoint, country)
   );
-  return async (dispatch: any): Promise<any> => {
+  return async (dispatch: any): Promise<void> => {
     dispatch(fetchDataExecuting());
     return Promise.all(requests)
       .then(emissions => {

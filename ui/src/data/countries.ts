@@ -171,7 +171,6 @@ export const countries: string[] = [
   'Portugal',
   'Puerto Rico',
   'Qatar',
-  'Réunion',
   'Romania',
   'Russian Federation',
   'Rwanda',

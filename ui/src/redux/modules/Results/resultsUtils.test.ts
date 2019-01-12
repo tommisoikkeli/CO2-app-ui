@@ -12,7 +12,7 @@ const response = [
     },
     countryiso3code: 'FIN',
     date: '2014',
-    value: 8.666666,
+    value: 8.333333,
     unit: '',
     obs_status: '',
     decimal: 1
@@ -28,7 +28,7 @@ const response = [
     },
     countryiso3code: 'FIN',
     date: '2013',
-    value: 7.666666,
+    value: 7.333333,
     unit: '',
     obs_status: '',
     decimal: 1
@@ -44,11 +44,11 @@ describe('reduceResponse', () => {
       entries: [
         {
           date: '2014',
-          value: 8.666666
+          value: 8.333333
         },
         {
           date: '2013',
-          value: 7.666666
+          value: 7.333333
         }
       ]
     });

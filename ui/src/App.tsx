@@ -7,7 +7,7 @@ import Results from './components/Results/Results';
 
 const store = configureStore();
 
-export default class App extends React.Component<any> {
+export default class App extends React.Component {
   public render() {
     return (
       <Provider store={store}>

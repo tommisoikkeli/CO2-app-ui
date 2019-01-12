@@ -17,10 +17,12 @@ interface ILineDataType {
   value: any;
 }
 
+const MOBILE_WIDTH = 768;
+
 export default class LineChart extends React.Component<ILineChartProps> {
   private desktopMargins = {
     top: 20,
-    right: 130,
+    right: 140,
     bottom: 30,
     left: 80
   };
@@ -52,17 +54,19 @@ export default class LineChart extends React.Component<ILineChartProps> {
     d3.select('#data-chart').select('*').remove();
   }
 
+  private isDesktopResolution = (): boolean => window.innerWidth >= MOBILE_WIDTH;
+
   private drawChart = (data: IData[]): void => {
     // all entries in one array, used in scatter plot generation
     const allEntries: ILineDataType[] = d3.merge(data.map(d => d.entries));
-    const lineColors = d3.scaleOrdinal(d3.schemeCategory10).range();
+
+    // line colors from d3 color scheme
+    const lineColors = d3.scaleOrdinal(d3.schemeDark2).range();
 
     // size attributes
-    const margins = window.innerWidth >= 768 ? this.desktopMargins : this.mobileMargins;
+    const margins = this.isDesktopResolution() ? this.desktopMargins : this.mobileMargins;
     const svgWidth = parseInt(d3.select('.results-line-chart').style('width'));
-    const svgHeight = parseInt(
-      d3.select('.results-line-chart').style('height')
-    );
+    const svgHeight = parseInt(d3.select('.results-line-chart').style('height'));
     const width = svgWidth - margins.left - margins.right;
     const height = svgHeight - margins.top - margins.bottom;
 
@@ -76,6 +80,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const g = svg
       .append('g')
       .attr('transform', `translate(${margins.left} ${margins.top})`);
+
+    // x and y scales
     const xScale = d3.scaleLinear().rangeRound([0, width]);
     const yScale = d3.scaleLinear().rangeRound([height, 0]);
 
@@ -116,8 +122,8 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('stroke', (d, i) => lineColors[i])
       .attr('d', (d: IData) => line(d.entries));
 
-    // label at the end of line
-    if (window.innerWidth >= 768) {
+    // label at the end of line on desktop resolution
+    if (this.isDesktopResolution()) {
       g.selectAll('.line-text')
         .data(data)
         .enter()
@@ -167,7 +173,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       });
   };
 
-  private resize = () => {
+  private resize = (): void => {
     this.deleteChartContent();
     this.drawChart(this.props.data);
   };

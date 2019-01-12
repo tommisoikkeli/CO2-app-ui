@@ -10,6 +10,7 @@
 
   &.default {
     background: $steelblue;
+
     &:hover {
       background: lighten($steelblue, 5%);
     }
@@ -18,6 +19,7 @@
   &.error {
     background: $error-red;
     width: 100%;
+
     &:hover {
       background: lighten($error-red, 5%);
     }
@@ -26,6 +28,7 @@
   &:disabled {
     background: $border-gray;
     cursor: not-allowed;
+    
     &:hover {
       background: $border-gray;
     }

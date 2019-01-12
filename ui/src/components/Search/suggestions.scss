@@ -10,6 +10,7 @@
   z-index: 1;
   box-shadow: 1px 1px 1px 1px $box-shadow-gray;
   display: none;
+
   &.visible {
     display: block;
   }
@@ -17,6 +18,7 @@
   .suggestion-item {
     padding: 3px;
     cursor: pointer;
+    
     &:hover {
       background: darken($white, 5%);
     }

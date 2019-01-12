@@ -15,12 +15,15 @@
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 1px 1px 0 $border-gray;
+
       &:hover {
         background: darken($white, 2%);
       }
+
       @include mobile {
         margin-right: 12px;
       }
+      
       @include mobile-small {
         font-size: 11px;
         margin-right: 10px;

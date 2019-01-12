@@ -8,6 +8,7 @@
   h1 {
     color: $header-black;
     font-size: 22px;
+    
     @include desktop {
       font-size: 32px;
     }

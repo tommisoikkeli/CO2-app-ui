@@ -14,8 +14,7 @@ export const TextInput: React.SFC<ITextInputProps> = ({
   onChange,
   onClearButtonClick
 }) => {
-  const clearFieldButton =
-    value.length > 0 ? <ClearFieldButton onClick={onClearButtonClick} /> : null;
+  const clearFieldButton = value.length > 0 && <ClearFieldButton onClick={onClearButtonClick} />;
   return (
     <div className='input-container'>
       <input

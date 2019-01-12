@@ -21,8 +21,8 @@ interface IStateProps {
 interface IDispatchProps {
   suggestCountries: (searchTerm: string) => void;
   saveCountryName: (searchTerm: string) => void;
-  getEmissionData: (endpoint: string, country: string) => Promise<any>;
-  convertData: (endpoint: string, countries: string[]) => Promise<any>;
+  getEmissionData: (endpoint: string, country: string) => Promise<void>;
+  convertData: (endpoint: string, countries: string[]) => Promise<void>;
 }
 
 type ISearchProps = IStateProps & IDispatchProps;

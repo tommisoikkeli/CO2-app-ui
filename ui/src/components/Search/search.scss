@@ -17,9 +17,11 @@
 
   .search-button {
     margin-left: 15px;
+
     @include mobile {
       margin-left: 5px;
     }
+    
     @include mobile-small {
       margin-left: 5px;
     }
