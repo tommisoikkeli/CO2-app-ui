@@ -2,9 +2,11 @@
 
 A simple application that shows CO2 emission data for countries, total and per capita. Data is fetched from World Bank API.
 
-This repository contains the ui code for the app. The backend code can be found in [here](https://github.com/tommisoikkeli/co2-backend)
+This repository contains the ui code for the app. The backend code can be found in [this repository](https://github.com/tommisoikkeli/co2-backend)
 
 Technologies used: React, Typescript, Redux, D3, Sass, Node.js, Express.
+
+The app is running [here](https://co2emissions-app.surge.sh/)
 
 ## Running locally
 
