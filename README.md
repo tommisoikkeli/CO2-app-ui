@@ -1,5 +1,7 @@
-## What is this?
+## Running ui locally
 
-A simple application that shows CO2 emission data for countries, total and per capita. Data is fetched from World Bank API.
+First, install dependencies with `npm install` or `yarn install`
 
-Technologies used in the app: React, Typescript, Redux, D3, Sass, Node.js, Express.
+To start the app: `npm start` or `yarn start`
+
+To run tests: `npm test` or `yarn test`
