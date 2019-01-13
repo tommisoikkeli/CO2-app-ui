@@ -8,6 +8,7 @@ interface ILineChartProps {
 interface IData {
   country: string;
   indicator: string;
+  iso3Code: string;
   entries: ILineDataType[];
 }
 
@@ -51,10 +52,13 @@ export default class LineChart extends React.Component<ILineChartProps> {
   }
 
   private deleteChartContent = (): void => {
-    d3.select('#data-chart').select('*').remove();
-  }
+    d3.select('#data-chart')
+      .select('*')
+      .remove();
+  };
 
-  private isDesktopResolution = (): boolean => window.innerWidth >= MOBILE_WIDTH;
+  private isDesktopResolution = (): boolean =>
+    window.innerWidth >= MOBILE_WIDTH;
 
   private drawChart = (data: IData[]): void => {
     // all entries in one array, used in scatter plot generation
@@ -64,7 +68,9 @@ export default class LineChart extends React.Component<ILineChartProps> {
     const lineColors = d3.scaleOrdinal(d3.schemeDark2).range();
 
     // size attributes
-    const margins = this.isDesktopResolution() ? this.desktopMargins : this.mobileMargins;
+    const margins = this.isDesktopResolution()
+      ? this.desktopMargins
+      : this.mobileMargins;
     const svgWidth = parseInt(d3.select('.results-line-chart').style('width'));
     const svgHeight = parseInt(d3.select('.results-line-chart').style('height'));
     const width = svgWidth - margins.left - margins.right;
@@ -123,21 +129,19 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('d', (d: IData) => line(d.entries));
 
     // label at the end of line on desktop resolution
-    if (this.isDesktopResolution()) {
-      g.selectAll('.line-text')
-        .data(data)
-        .enter()
-        .append('text')
-        .attr('class', 'line-text')
-        .attr(
-          'transform',
-          (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`
-        )
-        .attr('fill', (d, i) => lineColors[i])
-        .attr('x', 10)
-        .attr('dy', '1em')
-        .text((d: IData) => d.country);
-    }
+    g.selectAll('.line-text')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr('class', 'line-text')
+      .attr(
+        'transform',
+        (d: IData) => `translate(${width}, ${yScale(d.entries[0].value)})`
+      )
+      .attr('fill', (d, i) => lineColors[i])
+      .attr('x', 10)
+      .attr('dy', '1em')
+      .text((d: IData) => this.isDesktopResolution() ? d.country : d.iso3Code);
 
     // scatter plot generator with fancy hover effects
     g.selectAll('.dot')

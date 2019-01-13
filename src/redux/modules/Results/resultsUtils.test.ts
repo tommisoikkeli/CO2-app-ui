@@ -41,6 +41,7 @@ describe('reduceResponse', () => {
     expect(reducedResponse).toEqual({
       country: 'Finland',
       indicator: 'CO2 emissions (metric tons per capita)',
+      iso3Code: 'FIN',
       entries: [
         {
           date: '2014',

@@ -11,6 +11,7 @@ export const reduceResponse = (data: IEmissionDataResponseEntry[]): IEmissionDat
   return {
     country: data[0].country.value,
     indicator: data[0].indicator.value,
+    iso3Code: data[0].countryiso3code,
     entries: reduced
   };
 };

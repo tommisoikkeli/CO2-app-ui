@@ -8,6 +8,7 @@ export interface IResultsReduxState {
 export interface IEmissionData {
   country: string;
   indicator: string;
+  iso3Code: string;
   entries: IDataEntry[];
 }
 
