@@ -57,8 +57,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .remove();
   };
 
-  private isDesktopResolution = (): boolean =>
-    window.innerWidth >= MOBILE_WIDTH;
+  private isDesktopResolution = (): boolean => window.innerWidth >= MOBILE_WIDTH;
 
   private drawChart = (data: IData[]): void => {
     // all entries in one array, used in scatter plot generation
@@ -128,7 +127,7 @@ export default class LineChart extends React.Component<ILineChartProps> {
       .attr('stroke', (d, i) => lineColors[i])
       .attr('d', (d: IData) => line(d.entries));
 
-    // label at the end of line on desktop resolution
+    // label at the end of line
     g.selectAll('.line-text')
       .data(data)
       .enter()
