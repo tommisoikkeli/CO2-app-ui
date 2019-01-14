@@ -12,12 +12,11 @@ const initialState: IResultsReduxState = {
 
 export const resultsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ResultsActionTypes.SAVE_COUNTRY_NAME: {
+    case ResultsActionTypes.SAVE_COUNTRY_NAME:
       return {
         ...state,
         searchedCountries: [...state.searchedCountries, action.payload]
       };
-    }
     case ResultsActionTypes.FETCH_DATA_EXECUTING:
       return {
         ...state,

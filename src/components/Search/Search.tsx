@@ -70,10 +70,10 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
   private getSuggestions = debounce(() => {
     if (this.isSearchLengthOverOne()) {
       this.setState({suggestionsVisible: true});
+      this.props.suggestCountries(this.state.value);
     } else {
       this.setState({suggestionsVisible: false});
     }
-    this.isSearchLengthOverOne() && this.props.suggestCountries(this.state.value);
   }, 300);
 
   private isSearchLengthOverOne = (): boolean => this.state.value.length > 1;
