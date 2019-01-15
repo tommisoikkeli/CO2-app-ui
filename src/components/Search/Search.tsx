@@ -115,7 +115,7 @@ export class Search extends React.Component<ISearchProps, ISearchState> {
       onCloseClick={() => this.setState({errorModalVisible: false})}/>
   );
 
-  private onSearchClick = (): JSX.Element | void => {
+  private onSearchClick = (): void => {
     if (this.isLineChartOnLimit()) {
       this.setState({errorModalVisible: true});
     } else {
